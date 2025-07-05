@@ -119,7 +119,7 @@ Location: ${formData.location}
 ${formData.message ? `Message: ${formData.message}` : ''}`
       
       setTimeout(() => {
-        window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank')
+        window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank')
       }, 1500)
       
       // Reset form
@@ -165,7 +165,7 @@ ${formData.message ? `Message: ${formData.message}` : ''}`
           <input
             type="tel"
             name="phone"
-            placeholder="Phone Number * (e.g., 9876543210 or +91 98765 43210)"
+            placeholder="Phone Number * (e.g., 6302789421 or +91 63027 89421)"
             value={formData.phone}
             onChange={handleChange}
             className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-purple-300 focus:outline-none transition-colors ${
@@ -278,14 +278,14 @@ ${formData.message ? `Message: ${formData.message}` : ''}`
         </p>
         <div className="flex justify-center space-x-4 mt-2">
           <a 
-            href="tel:+919876543210"
+            href="tel:+916302789421"
             className="flex items-center space-x-2 text-pink-400 hover:text-pink-300 transition-colors"
           >
             <Phone size={16} />
-            <span>+91 98765 43210</span>
+            <span>+91 63027 89421</span>
           </a>
           <a 
-            href="https://wa.me/919876543210"
+            href="https://wa.me/916302789421"
             target="_blank"
             className="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors"
           >
