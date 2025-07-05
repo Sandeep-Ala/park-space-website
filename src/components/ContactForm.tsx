@@ -1,299 +1,300 @@
+// =============================================
+// src/components/ContactForm.tsx
+// Updated contact form with database integration
+// =============================================
 'use client'
 
-import { useState } from 'react'
-import { MessageCircle, Phone, CheckCircle, AlertCircle } from 'lucide-react'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Phone, Mail, MapPin, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { validateIndianPhone, formatIndianPhone, generateWhatsAppMessage } from '@/lib/utils'
 
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    location: '',
-    service: 'boom-barriers',
-    message: ''
-  })
-  
+// Form validation schema
+const contactFormSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  phone: z.string().refine(validateIndianPhone, {
+    message: 'Please enter a valid Indian mobile number',
+  }),
+  email: z.string().email('Please enter a valid email').optional().or(z.literal('')),
+  location: z.string().min(2, 'Location must be at least 2 characters'),
+  service_type: z.string().min(1, 'Please select a service'),
+  message: z.string().optional(),
+})
+
+type ContactFormData = z.infer<typeof contactFormSchema>
+
+interface ContactFormProps {
+  className?: string
+  onSuccess?: () => void
+}
+
+const SERVICES = [
+  { value: 'boom-barriers', label: 'Boom Barriers' },
+  { value: 'cctv-services', label: 'CCTV Services' },
+  { value: 'biometric-attendance', label: 'Biometric Attendance' },
+  { value: 'door-access-controllers', label: 'Door Access Controllers' },
+  { value: 'fire-alarm-systems', label: 'Fire & Alarm Systems' },
+  { value: 'networking-systems', label: 'Networking Systems' },
+  { value: 'bollard-barriers', label: 'Bollard Barriers' },
+  { value: 'flap-barriers', label: 'Flap Barriers' },
+  { value: 'swing-gates', label: 'Swing Gates' },
+  { value: 'sliding-gate-motors', label: 'Sliding Gate Motors' },
+]
+
+export default function ContactForm({ className = '', onSuccess }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [phoneError, setPhoneError] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  // Indian phone number validation
-  const validateIndianPhone = (phone: string): boolean => {
-    // Remove all non-digit characters
-    const cleanPhone = phone.replace(/\D/g, '')
-    
-    // Check for valid Indian phone number patterns:
-    // 1. 10 digits starting with 6,7,8,9
-    // 2. 11 digits starting with 0 then 6,7,8,9
-    // 3. 12 digits starting with 91 then 6,7,8,9
-    // 4. 13 digits starting with +91 then 6,7,8,9
-    
-    if (cleanPhone.length === 10) {
-      return /^[6-9]\d{9}$/.test(cleanPhone)
-    } else if (cleanPhone.length === 11) {
-      return /^0[6-9]\d{9}$/.test(cleanPhone)
-    } else if (cleanPhone.length === 12) {
-      return /^91[6-9]\d{9}$/.test(cleanPhone)
-    } else if (cleanPhone.length === 13 && phone.startsWith('+')) {
-      return /^91[6-9]\d{9}$/.test(cleanPhone)
-    }
-    
-    return false
-  }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+  })
 
-  const formatPhoneNumber = (phone: string): string => {
-    const cleanPhone = phone.replace(/\D/g, '')
-    
-    if (cleanPhone.length === 10) {
-      return `+91 ${cleanPhone.slice(0, 5)} ${cleanPhone.slice(5)}`
-    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('0')) {
-      const withoutZero = cleanPhone.slice(1)
-      return `+91 ${withoutZero.slice(0, 5)} ${withoutZero.slice(5)}`
-    } else if (cleanPhone.length === 12 && cleanPhone.startsWith('91')) {
-      const number = cleanPhone.slice(2)
-      return `+91 ${number.slice(0, 5)} ${number.slice(5)}`
-    }
-    
-    return phone
-  }
+  const phoneValue = watch('phone')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    
-    if (name === 'phone') {
-      // Allow only numbers, +, spaces, and hyphens
-      const sanitizedValue = value.replace(/[^\d+\s-]/g, '')
-      setFormData({
-        ...formData,
-        [name]: sanitizedValue
-      })
-      
-      // Validate phone number on change
-      if (sanitizedValue.length > 0) {
-        if (validateIndianPhone(sanitizedValue)) {
-          setPhoneError('')
-        } else {
-          setPhoneError('Please enter a valid Indian phone number')
-        }
-      } else {
-        setPhoneError('')
-      }
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      })
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    // Final phone validation
-    if (!validateIndianPhone(formData.phone)) {
-      setPhoneError('Please enter a valid Indian phone number (10 digits starting with 6,7,8,9)')
-      return
-    }
-    
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
     setSubmitStatus('idle')
-    setPhoneError('')
-    
+    setErrorMessage('')
+
     try {
-      // For now, just simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      console.log('Form submitted:', {
-        ...formData,
-        phone: formatPhoneNumber(formData.phone)
+      // Format phone number
+      const formattedPhone = formatIndianPhone(data.phone)
+
+      // Prepare lead data
+      const leadData = {
+        ...data,
+        phone: formattedPhone,
+        email: data.email || undefined,
+        message: data.message || undefined,
+        source: 'website',
+        landing_page: window.location.pathname,
+      }
+
+      // Submit to API
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadData),
       })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to submit contact form')
+      }
+
+      // Success handling
       setSubmitStatus('success')
-      
-      // Redirect to WhatsApp after successful submission
-      const formattedPhone = formatPhoneNumber(formData.phone)
-      const message = `Hi, I submitted a contact form on your website.
-Name: ${formData.name}
-Phone: ${formattedPhone}
-Service: ${formData.service}
-Location: ${formData.location}
-${formData.message ? `Message: ${formData.message}` : ''}`
-      
+      reset()
+
+      // Call success callback
+      if (onSuccess) {
+        onSuccess()
+      }
+
+      // Redirect to WhatsApp after a short delay
       setTimeout(() => {
-        window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank')
+        const whatsappMessage = generateWhatsAppMessage(leadData)
+        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`
+        window.open(whatsappUrl, '_blank')
       }, 1500)
-      
-      // Reset form
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        location: '',
-        service: 'boom-barriers',
-        message: ''
-      })
-      
+
     } catch (error) {
-      console.error('Form submission error:', error)
+      console.error('Contact form submission error:', error)
       setSubmitStatus('error')
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to submit form')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-purple-500/20">
+    <div className={`bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 ${className}`}>
       <div className="text-center mb-6">
-        <h3 className="text-3xl font-bold text-white mb-2">Get Free Quote</h3>
-        <p className="text-purple-200">Fill the form and we'll contact you within 24 hours</p>
+        <h3 className="text-2xl font-bold text-white mb-2">Get Free Quote</h3>
+        <p className="text-white/80">Fill the form below and we'll contact you within 24 hours</p>
       </div>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name *"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/10 border border-purple-500/30 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-pink-500 transition-colors"
-            required
-            minLength={2}
-          />
-        </div>
 
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Name Field */}
         <div>
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Name *
+          </label>
           <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number * (e.g., 6302789421 or +91 63027 89421)"
-            value={formData.phone}
-            onChange={handleChange}
-            className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-purple-300 focus:outline-none transition-colors ${
-              phoneError ? 'border-red-500 focus:border-red-500' : 'border-purple-500/30 focus:border-pink-500'
+            {...register('name')}
+            type="text"
+            className={`w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
+              errors.name ? 'border-red-400' : ''
             }`}
-            required
+            placeholder="Your full name"
           />
-          {phoneError && (
-            <div className="flex items-center space-x-2 mt-2 text-red-400 text-sm">
-              <AlertCircle size={16} />
-              <span>{phoneError}</span>
-            </div>
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-300">{errors.name.message}</p>
           )}
-          <p className="text-purple-300 text-xs mt-1">
-            Enter 10-digit mobile number (6,7,8,9 series) or with +91 prefix
-          </p>
         </div>
 
+        {/* Phone Field */}
         <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email (Optional)"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/10 border border-purple-500/30 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-pink-500 transition-colors"
-          />
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Phone Number *
+          </label>
+          <div className="relative">
+            <Phone className="absolute left-3 top-3 h-5 w-5 text-white/60" />
+            <input
+              {...register('phone')}
+              type="tel"
+              className={`w-full pl-10 pr-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
+                errors.phone ? 'border-red-400' : ''
+              }`}
+              placeholder="9876543210"
+            />
+          </div>
+          {phoneValue && !errors.phone && (
+            <p className="mt-1 text-sm text-green-300">
+              ✓ {formatIndianPhone(phoneValue)}
+            </p>
+          )}
+          {errors.phone && (
+            <p className="mt-1 text-sm text-red-300">{errors.phone.message}</p>
+          )}
         </div>
 
+        {/* Email Field */}
         <div>
-          <input
-            type="text"
-            name="location"
-            placeholder="Location in Hyderabad *"
-            value={formData.location}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/10 border border-purple-500/30 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-pink-500 transition-colors"
-            required
-            minLength={2}
-          />
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Email (Optional)
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-3 h-5 w-5 text-white/60" />
+            <input
+              {...register('email')}
+              type="email"
+              className={`w-full pl-10 pr-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
+                errors.email ? 'border-red-400' : ''
+              }`}
+              placeholder="your@email.com"
+            />
+          </div>
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-300">{errors.email.message}</p>
+          )}
         </div>
 
+        {/* Location Field */}
         <div>
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Location *
+          </label>
+          <div className="relative">
+            <MapPin className="absolute left-3 top-3 h-5 w-5 text-white/60" />
+            <input
+              {...register('location')}
+              type="text"
+              className={`w-full pl-10 pr-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
+                errors.location ? 'border-red-400' : ''
+              }`}
+              placeholder="e.g., Hyderabad, Gachibowli"
+            />
+          </div>
+          {errors.location && (
+            <p className="mt-1 text-sm text-red-300">{errors.location.message}</p>
+          )}
+        </div>
+
+        {/* Service Type Field */}
+        <div>
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Service Required *
+          </label>
           <select
-            name="service"
-            value={formData.service}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/10 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-pink-500 transition-colors"
+            {...register('service_type')}
+            className={`w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
+              errors.service_type ? 'border-red-400' : ''
+            }`}
           >
-            <option value="boom-barriers">Boom Barriers</option>
-            <option value="cctv-services">CCTV Services</option>
-            <option value="biometric-attendance">Biometric Attendance</option>
-            <option value="door-access-controllers">Door Access Controllers</option>
-            <option value="fire-alarm-systems">Fire & Alarm Systems</option>
-            <option value="networking-systems">Networking Systems</option>
-            <option value="bollard-barriers">Bollard Barriers</option>
-            <option value="flap-barriers">Flap Barriers</option>
-            <option value="swing-gates">Swing Gates</option>
-            <option value="sliding-gate-motors">Sliding Gate Motors</option>
+            <option value="" className="bg-gray-800">Select a service</option>
+            {SERVICES.map((service) => (
+              <option key={service.value} value={service.value} className="bg-gray-800">
+                {service.label}
+              </option>
+            ))}
           </select>
+          {errors.service_type && (
+            <p className="mt-1 text-sm text-red-300">{errors.service_type.message}</p>
+          )}
         </div>
 
+        {/* Message Field */}
         <div>
-          <textarea
-            name="message"
-            rows={4}
-            placeholder="Message or Requirements (Optional)"
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full px-4 py-3 bg-white/10 border border-purple-500/30 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-pink-500 transition-colors resize-none"
-          />
+          <label className="block text-sm font-medium text-white/90 mb-2">
+            Message (Optional)
+          </label>
+          <div className="relative">
+            <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-white/60" />
+            <textarea
+              {...register('message')}
+              rows={3}
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors resize-none"
+              placeholder="Tell us about your requirements..."
+            />
+          </div>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          disabled={isSubmitting || !!phoneError}
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-4 rounded-lg font-semibold hover:from-pink-600 hover:to-purple-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          disabled={isSubmitting}
+          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <>
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <Loader2 className="h-5 w-5 animate-spin" />
               <span>Submitting...</span>
             </>
           ) : (
-            <>
-              <MessageCircle size={20} />
-              <span>Get Free Quote</span>
-            </>
+            <span>Get Free Quote</span>
           )}
         </button>
 
+        {/* Status Messages */}
         {submitStatus === 'success' && (
-          <div className="text-green-400 text-center flex items-center justify-center space-x-2">
-            <CheckCircle size={20} />
-            <span>Thank you! Redirecting to WhatsApp...</span>
+          <div className="p-3 bg-green-500/20 border border-green-400/30 rounded-lg flex items-center space-x-2">
+            <CheckCircle className="h-5 w-5 text-green-300" />
+            <div>
+              <p className="text-green-100 font-medium text-sm">Quote request submitted!</p>
+              <p className="text-green-200 text-xs">Redirecting to WhatsApp...</p>
+            </div>
           </div>
         )}
 
         {submitStatus === 'error' && (
-          <div className="text-red-400 text-center flex items-center justify-center space-x-2">
-            <AlertCircle size={20} />
-            <span>Something went wrong. Please try again or call us directly.</span>
+          <div className="p-3 bg-red-500/20 border border-red-400/30 rounded-lg flex items-center space-x-2">
+            <AlertCircle className="h-5 w-5 text-red-300" />
+            <div>
+              <p className="text-red-100 font-medium text-sm">Submission failed</p>
+              <p className="text-red-200 text-xs">{errorMessage}</p>
+            </div>
           </div>
         )}
       </form>
 
-      <div className="mt-6 text-center">
-        <p className="text-purple-200 text-sm">
-          Or contact us directly:
-        </p>
-        <div className="flex justify-center space-x-4 mt-2">
-          <a 
-            href="tel:+916302789421"
-            className="flex items-center space-x-2 text-pink-400 hover:text-pink-300 transition-colors"
-          >
-            <Phone size={16} />
-            <span>+91 63027 89421</span>
-          </a>
-          <a 
-            href="https://wa.me/916302789421"
-            target="_blank"
-            className="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors"
-          >
-            <MessageCircle size={16} />
-            <span>WhatsApp</span>
-          </a>
-        </div>
-      </div>
+      {/* Privacy Notice */}
+      <p className="text-xs text-white/60 text-center mt-4">
+        By submitting this form, you agree to our privacy policy. We'll contact you via WhatsApp or phone within 24 hours.
+      </p>
     </div>
   )
 }
