@@ -1,23 +1,13 @@
-
-// =============================================
 // src/components/sections/Services.tsx
-// =============================================
+// Fixed TypeScript readonly error for Services component
+
 import React from 'react'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
-import { SERVICES } from '@/lib/constants'
-
-interface Service {
-  id: string
-  name: string
-  slug: string
-  icon: string
-  shortDesc: string
-  priceRange: string
-}
+import { SERVICES, type ServiceItem } from '@/lib/constants'
 
 interface ServicesProps {
-  services?: Service[]
+  services?: readonly ServiceItem[]
 }
 
 export default function Services({ services = SERVICES }: ServicesProps) {

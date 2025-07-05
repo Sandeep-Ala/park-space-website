@@ -15,7 +15,7 @@ interface BoomBarriersContentProps {
   service: Service
   brands: Brand[]
 }
-
+  const [showLeadForm, setShowLeadForm] = useState(false)
 export default function BoomBarriersContent({ service, brands }: BoomBarriersContentProps) {
   const [selectedBrand, setSelectedBrand] = useState(brands[0]?.name || 'FAAC')
 
@@ -57,6 +57,10 @@ export default function BoomBarriersContent({ service, brands }: BoomBarriersCon
 
   const handleCall = () => {
     window.open(SOCIAL_LINKS.phone, '_self')
+  }
+  const handleLeadFormSuccess = (leadId: string) => {
+    setShowLeadForm(false)
+    // Optional: You can add success notification here
   }
 
   return (
@@ -183,9 +187,10 @@ export default function BoomBarriersContent({ service, brands }: BoomBarriersCon
                 </div>
                 <div className="card">
                   <h4 className="text-2xl font-bold text-white mb-6">Get {brand.name} Quote</h4>
-                  <LeadForm 
-                    service_type="boom-barriers" 
-                    sub_service={brand.name}
+                  <LeadForm
+                    defaultService="boom-barriers"
+                    defaultSubService={brand.name}
+                    onSuccess={handleLeadFormSuccess}
                   />
                 </div>
               </div>
