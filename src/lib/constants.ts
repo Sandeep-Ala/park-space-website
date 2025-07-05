@@ -5,11 +5,11 @@
 export const COMPANY_INFO = {
   name: 'Park Space',
   tagline: 'Automated Parking Solutions',
-  phone: '+919876543210', // Updated format for proper tel: links
-  phoneDisplay: '+91 98765 43210', // Display format
+  phone: '+916302789421', // Updated format for proper tel: links
+  phoneDisplay: '+91 63027 89421', // Display format
   email: 'info@parkspace.in',
   address: 'Hyderabad, Telangana, India',
-  whatsapp: '919876543210', // Without + for WhatsApp links
+  whatsapp: '916302789421', // Without + for WhatsApp links
   workingHours: 'Mon-Sat: 9:00 AM - 7:00 PM',
   established: '2019',
   experience: '5+ years'

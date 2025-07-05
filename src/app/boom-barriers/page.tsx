@@ -96,11 +96,11 @@ export default function BoomBarriersPage() {
 
   const handleWhatsApp = () => {
     const message = `Hi, I need information about boom barriers in Hyderabad. Interested in ${selectedBrand} brand.`
-    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank')
+    window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank')
   }
 
   const handleCall = () => {
-    window.open('tel:+919876543210', '_self')
+    window.open('tel:+916302789421', '_self')
   }
 
   return (
@@ -200,7 +200,7 @@ export default function BoomBarriersPage() {
                   className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 py-4 rounded-full font-semibold hover:from-pink-600 hover:to-purple-600 transition-all duration-300 flex items-center justify-center space-x-2"
                 >
                   <Phone size={20} />
-                  <span>Call +91 98765 43210</span>
+                  <span>Call +91 63027 89421</span>
                 </button>
               </div>
             </div>
