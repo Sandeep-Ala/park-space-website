@@ -14,7 +14,14 @@ export const COMPANY_INFO = {
   established: '2019',
   experience: '5+ years'
 }
-
+export interface ServiceItem {
+  readonly id: string
+  readonly name: string
+  readonly slug: string
+  readonly icon: string
+  readonly shortDesc: string
+  readonly priceRange: string
+}
 export const SERVICES = [
   {
     id: 'boom-barriers',

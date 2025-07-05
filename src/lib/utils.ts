@@ -1,11 +1,19 @@
-// # =============================================
-// # src/lib/utils.ts
-// # Utility functions
-// # =============================================
+// src/lib/utils.ts
+// Utility functions - Fixed with proper type imports
+
+import { Lead } from '@/types'
 
 // Simple className utility (no external dependencies)
 export function cn(...classes: (string | undefined | null | boolean)[]): string {
   return classes.filter(Boolean).join(' ')
+}
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(price)
 }
 
 // Phone number validation and formatting
