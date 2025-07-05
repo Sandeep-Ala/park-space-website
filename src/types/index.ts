@@ -1,6 +1,8 @@
-// =============================================
-// src/types/index.ts
-// =============================================
+
+// # =============================================
+// # src/types/index.ts
+// # Application type definitions
+// # =============================================
 export interface Lead {
   id: string
   name: string
@@ -51,7 +53,7 @@ export interface Service {
 export interface Brand {
   id: string
   name: string
-  service_id: string
+  service_id?: string
   logo?: string
   description?: string
   features?: string[]
@@ -63,15 +65,26 @@ export interface Brand {
   updated_at: string
 }
 
-export interface LeadActivity {
-  id: string
-  lead_id: string
-  activity_type: string
-  title: string
-  description?: string
-  notes?: string
-  performed_by?: string
-  scheduled_for?: string
-  completed_at?: string
-  created_at: string
+export interface CreateLeadRequest {
+  name: string
+  phone: string
+  email?: string
+  company?: string
+  location?: string
+  service_type: string
+  sub_service?: string
+  message?: string
+  source?: string
+  utm_source?: string
+  utm_medium?: string
+  utm_campaign?: string
+  referrer_url?: string
+  landing_page?: string
+}
+
+export interface ApiResponse<T> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
 }

@@ -1,26 +1,29 @@
-
 // =============================================
 // src/components/common/WhatsAppFloat.tsx
+// Floating WhatsApp button component
 // =============================================
 'use client'
 
 import React from 'react'
 import { MessageCircle } from 'lucide-react'
-import { SOCIAL_LINKS } from '@/lib/constants'
 
 export default function WhatsAppFloat() {
-  const handleWhatsApp = () => {
-    const message = "Hi, I'm interested in your services. Please provide more information."
-    window.open(`${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+  const handleWhatsAppClick = () => {
+    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'
+    const message = encodeURIComponent(
+      'Hi! I\'m interested in your security and automation services. Could you please provide more information?'
+    )
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`
+    window.open(whatsappUrl, '_blank')
   }
 
   return (
     <button
-      onClick={handleWhatsApp}
-      className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-40 whatsapp-float"
-      aria-label="Contact us on WhatsApp"
+      onClick={handleWhatsAppClick}
+      className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-200 z-50 animate-bounce hover:animate-none"
+      aria-label="Chat on WhatsApp"
     >
-      <MessageCircle size={24} />
+      <MessageCircle className="h-6 w-6" />
     </button>
   )
 }

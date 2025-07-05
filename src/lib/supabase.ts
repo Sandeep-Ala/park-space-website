@@ -1,23 +1,35 @@
+// # =============================================
+// # src/types/database.ts
+// # Supabase database type definitions
+// # =============================================
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@/types/database'
+import type { Database } from '@/types/database'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-if (!supabaseUrl || !supabaseKey) {
+if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables')
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey)
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+  },
+})
 
-// For server-side operations with service role
-export const supabaseAdmin = createClient<Database>(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
+// Admin client for server-side operations
+export const createAdminClient = () => {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  
+  if (!serviceRoleKey) {
+    throw new Error('Missing Supabase service role key')
+  }
+  
+  return createClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-)
+      persistSession: false,
+    },
+  })
+}
