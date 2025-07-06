@@ -288,7 +288,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
       {/* Floating WhatsApp Button */}
       <button
         onClick={handleWhatsApp}
