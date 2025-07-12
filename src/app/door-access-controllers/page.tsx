@@ -6,8 +6,8 @@
 
 import React, { useState, useRef } from 'react'
 import { Key, Shield, Smartphone, Clock, Lock, Wrench, Building, Banknote, Heart, School, ChevronRight, CreditCard } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+// import Header from '@/components/layout/Header'
+// import Footer from '@/components/layout/Footer'
 import LeadForm from '@/components/forms/LeadForm'
 import WhatsAppFloat from '@/components/common/WhatsAppFloat'
 
@@ -122,7 +122,7 @@ export default function DoorAccessControllersPage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <WhatsAppFloat />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -380,7 +380,7 @@ export default function DoorAccessControllersPage() {
         </section>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

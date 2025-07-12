@@ -6,8 +6,8 @@
 
 import React, { useState } from 'react'
 import { Shield, Eye, Monitor, Camera, Clock, Wrench, Users, Building, Car, Home, ChevronRight } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+// import Header from '@/components/layout/Header'
+// import Footer from '@/components/layout/Footer'
 import LeadForm from '@/components/forms/LeadForm'
 import WhatsAppFloat from '@/components/common/WhatsAppFloat'
 
@@ -104,7 +104,7 @@ export default function CCTVServicesPage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <WhatsAppFloat />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -331,7 +331,7 @@ export default function CCTVServicesPage() {
         </section>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

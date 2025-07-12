@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Phone, MessageCircle, Menu, X, Shield, Wrench, Clock, Star, ChevronRight } from 'lucide-react'
 import ContactForm from '../components/ContactForm'
 import Image from 'next/image'
-import Footer from 'src/components/layout/Footer'
+// import Footer from 'src/components/layout/Footer'
 const services = [
   {
     id: 'boom-barriers',
@@ -64,73 +64,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Navigation */}
-      <nav className="bg-black/50 backdrop-blur-md border-b border-purple-500/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden bg-white/10">
-              <Image 
-                src="/images/logo.png" 
-                alt="Park Space Logo" 
-                width={48}
-                height={48}
-                className="object-contain"
-                priority
-                onError={() => {
-                  console.log('Logo failed to load from /images/logo.png')
-                }}
-              />
-            </div>
-            <div>
-              <h1 className="text-white font-bold text-xl">PARK SPACE</h1>
-              <p className="text-purple-300 text-sm">Automated Parking Solutions</p>
-            </div>
-          </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-white hover:text-pink-400 transition-colors">Home</a>
-              <a href="#services" className="text-white hover:text-pink-400 transition-colors">Services</a>
-              <a href="#contact" className="text-white hover:text-pink-400 transition-colors">Contact</a>
-              <a href="#about" className="text-white hover:text-pink-400 transition-colors">About</a>
-              <button
-                onClick={handleCall}
-                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition-all duration-300 font-semibold"
-              >
-                Call Now
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-purple-500/20">
-              <div className="flex flex-col space-y-4 mt-4">
-                <a href="#home" className="text-white hover:text-pink-400 transition-colors">Home</a>
-                <a href="#services" className="text-white hover:text-pink-400 transition-colors">Services</a>
-                <a href="#contact" className="text-white hover:text-pink-400 transition-colors">Contact</a>
-                <a href="#about" className="text-white hover:text-pink-400 transition-colors">About</a>
-                <button
-                  onClick={handleCall}
-                  className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition-all duration-300 font-semibold w-fit"
-                >
-                  Call Now
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section id="home" className="relative py-20 px-4">
@@ -287,9 +221,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Footer */}
-      {/* <Footer /> */}
-      {/* Floating WhatsApp Button */}
       <button
         onClick={handleWhatsApp}
         className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-40"
