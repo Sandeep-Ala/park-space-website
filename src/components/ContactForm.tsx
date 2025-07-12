@@ -159,7 +159,7 @@ export default function ContactForm({ className = '', onSuccess }: ContactFormPr
               className={`w-full pl-10 pr-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-colors ${
                 errors.phone ? 'border-red-400' : ''
               }`}
-              placeholder="9876543210"
+              placeholder="6302789421"
             />
           </div>
           {phoneValue && !errors.phone && (

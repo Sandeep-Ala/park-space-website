@@ -84,7 +84,7 @@ export default function DebugAPIPage() {
               <button
                 onClick={() => testAPI('/api/leads', 'POST', {
                   name: 'Debug Test',
-                  phone: '9876543210',
+                  phone: '6302789421',
                   service_type: 'boom-barriers',
                   location: 'Hyderabad'
                 })}

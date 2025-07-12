@@ -92,7 +92,7 @@ export default function TestAPIPage() {
     // Test 3: POST /api/leads
     const testLead = {
       name: 'Test User',
-      phone: '9876543210',
+      phone: '6302789421',
       email: 'test@example.com',
       location: 'Hyderabad',
       service_type: 'boom-barriers',

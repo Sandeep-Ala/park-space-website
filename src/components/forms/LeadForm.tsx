@@ -171,7 +171,7 @@ export default function LeadForm({
             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
               errors.phone ? 'border-red-500' : 'border-white-300'
             }`}
-            placeholder="9876543210"
+            placeholder="6302789421"
           />
         </div>
         {phoneValue && !errors.phone && (
@@ -183,7 +183,7 @@ export default function LeadForm({
           <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
         )}
         <p className="mt-1 text-xs text-white-500">
-          Format: 9876543210 or +91 9876543210
+          Format: 6302789421 or +91 6302789421
         </p>
       </div>
 
