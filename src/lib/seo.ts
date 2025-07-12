@@ -215,7 +215,7 @@ export const SITE_CONFIG = {
   title: 'Park Space - Complete Automation Solutions in Hyderabad | Boom Barriers, CCTV, Security Systems',
   description: 'Leading provider of boom barriers, CCTV, biometric systems, fire alarms, networking & complete automation solutions in Hyderabad. FAAC authorized dealer. Expert installation & 24/7 support.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://parkspace.com',
-  ogImage: '/images/og-image.jpg',
+  ogImage: 'public/images/icon-192x192.png',
   author: 'Park Space Automation Solutions',
   
   // Business Information
