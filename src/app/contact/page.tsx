@@ -20,7 +20,7 @@ export default function ContactPage() {
       title: 'Call Us',
       description: 'Speak directly with our experts',
       value: '+91 98765 43210',
-      action: 'tel:+919876543210',
+      action: 'tel:+916302789421',
       actionText: 'Call Now',
       color: 'from-green-500 to-emerald-500'
     },
@@ -29,7 +29,7 @@ export default function ContactPage() {
       title: 'WhatsApp',
       description: 'Quick quotes and instant support',
       value: '+91 98765 43210',
-      action: 'https://wa.me/919876543210?text=Hi%20Park%20Space,%20I%20need%20information%20about%20parking%20automation%20solutions.',
+      action: 'https://wa.me/916302789421?text=Hi%20Park%20Space,%20I%20need%20information%20about%20parking%20automation%20solutions.',
       actionText: 'WhatsApp',
       color: 'from-green-600 to-green-500'
     },
@@ -211,7 +211,7 @@ export default function ContactPage() {
                 <h3 className="text-xl font-bold text-white mb-2">WhatsApp Support</h3>
                 <p className="text-purple-100 mb-4">Instant quotes and quick replies</p>
                 <a 
-                  href="https://wa.me/919876543210?text=Hi%20Park%20Space,%20I%20need%20urgent%20support."
+                  href="https://wa.me/916302789421?text=Hi%20Park%20Space,%20I%20need%20urgent%20support."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"

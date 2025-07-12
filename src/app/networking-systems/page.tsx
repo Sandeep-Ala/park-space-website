@@ -222,26 +222,18 @@ export default function NetworkingSystemsPage() {
 
   const handleBrandSelect = (brand: typeof networkingBrands[0]) => {
     setSelectedBrand(brand);
-    trackEvent('brand_selection', {
-      service: 'networking-systems',
-      brand: brand.name
-    });
+
   };
 
   const handleCTAClick = (action: string) => {
-    trackEvent('cta_click', {
-      service: 'networking-systems',
-      action,
-      brand: selectedBrand.name
-    });
     
     if (action === 'get_quote') {
       setIsFormVisible(true);
     } else if (action === 'whatsapp') {
       const message = `Hi! I'm interested in ${selectedBrand.name} Networking Systems. Price range: ${selectedBrand.priceRange}. Please provide more details.`;
-      window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank');
+      window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank');
     } else if (action === 'call') {
-      window.open('tel:+919876543210', '_self');
+      window.open('tel:+916302789421', '_self');
     }
   };
 

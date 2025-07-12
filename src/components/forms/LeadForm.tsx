@@ -122,7 +122,7 @@ export default function LeadForm({
       // Redirect to WhatsApp after a short delay
       setTimeout(() => {
         const whatsappMessage = generateWhatsAppMessage(leadData)
-        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'
+        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916302789421'
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`
         window.open(whatsappUrl, '_blank')
       }, 1500)

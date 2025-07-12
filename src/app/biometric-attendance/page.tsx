@@ -366,7 +366,7 @@ export default function BiometricAttendancePage() {
                 <ChevronRight className="h-5 w-5" />
               </button>
               <a
-                href={`tel:${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'}`}
+                href={`tel:${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916302789421'}`}
                 className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition-all duration-200 border border-white/20"
               >
                 Call Now: +91 98765 43210
