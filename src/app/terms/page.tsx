@@ -273,7 +273,7 @@ export default function TermsPage() {
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Customer Service</h4>
                 <a href="tel:+916302789421" className="text-purple-100 hover:text-white">
-                  +91 98765 43210
+                  +91 63027 89421
                 </a>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">

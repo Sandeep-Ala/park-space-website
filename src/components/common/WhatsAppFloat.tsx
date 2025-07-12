@@ -9,7 +9,7 @@ import { MessageCircle } from 'lucide-react'
 
 export default function WhatsAppFloat() {
   const handleWhatsAppClick = () => {
-    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916302789421'
+    const whatsappNumber = '6302789421'
     const message = encodeURIComponent(
       'Hi! I\'m interested in your security and automation services. Could you please provide more information?'
     )

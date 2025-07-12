@@ -230,7 +230,7 @@ export default function AboutPage() {
                   <div className="flex items-center justify-center gap-2">
                     <span className="font-semibold">📞 Phone:</span>
                     <a href="tel:+916302789421" className="hover:text-white">
-                      +91 98765 43210
+                      +91 63027 89421
                     </a>
                   </div>
                   <div className="flex items-center justify-center gap-2">

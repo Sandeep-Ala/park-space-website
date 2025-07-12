@@ -19,7 +19,7 @@ export default function ContactPage() {
       icon: Phone,
       title: 'Call Us',
       description: 'Speak directly with our experts',
-      value: '+91 98765 43210',
+      value: '+91 63027 89421',
       action: 'tel:+916302789421',
       actionText: 'Call Now',
       color: 'from-green-500 to-emerald-500'
@@ -28,7 +28,7 @@ export default function ContactPage() {
       icon: MessageCircle,
       title: 'WhatsApp',
       description: 'Quick quotes and instant support',
-      value: '+91 98765 43210',
+      value: '+91 63027 89421',
       action: 'https://wa.me/916302789421?text=Hi%20Park%20Space,%20I%20need%20information%20about%20parking%20automation%20solutions.',
       actionText: 'WhatsApp',
       color: 'from-green-600 to-green-500'

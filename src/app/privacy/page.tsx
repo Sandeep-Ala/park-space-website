@@ -77,7 +77,7 @@ export default function PrivacyPage() {
       content: [
         "Data Controller: Park Space Automation Solutions, Hyderabad, Telangana, India.",
         "Contact Email: privacy@parkspace.com for all privacy-related inquiries.",
-        "Phone Contact: +91 98765 43210 for urgent privacy concerns.",
+        "Phone Contact: +91 63027 89421 for urgent privacy concerns.",
         "Policy Updates: We will notify you of any significant changes to this privacy policy.",
         "Effective Date: This policy is effective from July 2025 and will be reviewed annually."
       ]
@@ -240,7 +240,7 @@ export default function PrivacyPage() {
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Phone</h4>
                 <a href="tel:+916302789421" className="text-purple-100 hover:text-white">
-                  +91 98765 43210
+                  +91 63027 89421
                 </a>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
