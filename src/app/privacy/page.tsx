@@ -239,7 +239,7 @@ export default function PrivacyPage() {
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Phone</h4>
-                <a href="tel:+919876543210" className="text-purple-100 hover:text-white">
+                <a href="tel:+916302789421" className="text-purple-100 hover:text-white">
                   +91 98765 43210
                 </a>
               </div>

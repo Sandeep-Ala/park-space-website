@@ -122,7 +122,7 @@ export default function LeadForm({
       // Redirect to WhatsApp after a short delay
       setTimeout(() => {
         const whatsappMessage = generateWhatsAppMessage(leadData)
-        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210'
+        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '916302789421'
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`
         window.open(whatsappUrl, '_blank')
       }, 1500)
@@ -140,7 +140,7 @@ export default function LeadForm({
     <form onSubmit={handleSubmit(onSubmit)} className={`space-y-6 ${className}`}>
       {/* Name Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Name *
         </label>
         <div className="relative">
@@ -148,7 +148,7 @@ export default function LeadForm({
             {...register('name')}
             type="text"
             className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
-              errors.name ? 'border-red-500' : 'border-gray-300'
+              errors.name ? 'border-red-500' : 'border-white-300'
             }`}
             placeholder="Your full name"
           />
@@ -160,16 +160,16 @@ export default function LeadForm({
 
       {/* Phone Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Phone Number *
         </label>
         <div className="relative">
-          <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <Phone className="absolute left-3 top-3 h-5 w-5 text-white-400" />
           <input
             {...register('phone')}
             type="tel"
             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
-              errors.phone ? 'border-red-500' : 'border-gray-300'
+              errors.phone ? 'border-red-500' : 'border-white-300'
             }`}
             placeholder="9876543210"
           />
@@ -182,23 +182,23 @@ export default function LeadForm({
         {errors.phone && (
           <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
         )}
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-white-500">
           Format: 9876543210 or +91 9876543210
         </p>
       </div>
 
       {/* Email Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Email (Optional)
         </label>
         <div className="relative">
-          <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <Mail className="absolute left-3 top-3 h-5 w-5 text-white-400" />
           <input
             {...register('email')}
             type="email"
             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
-              errors.email ? 'border-red-500' : 'border-gray-300'
+              errors.email ? 'border-red-500' : 'border-white-300'
             }`}
             placeholder="your@email.com"
           />
@@ -210,15 +210,15 @@ export default function LeadForm({
 
       {/* Company Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Company (Optional)
         </label>
         <div className="relative">
-          <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <Building className="absolute left-3 top-3 h-5 w-5 text-white-400" />
           <input
             {...register('company')}
             type="text"
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+            className="w-full pl-10 pr-4 py-3 border border-white-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
             placeholder="Your company name"
           />
         </div>
@@ -226,16 +226,16 @@ export default function LeadForm({
 
       {/* Location Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Location *
         </label>
         <div className="relative">
-          <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <MapPin className="absolute left-3 top-3 h-5 w-5 text-white-400" />
           <input
             {...register('location')}
             type="text"
             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
-              errors.location ? 'border-red-500' : 'border-gray-300'
+              errors.location ? 'border-red-500' : 'border-white-300'
             }`}
             placeholder="e.g., Hyderabad, Gachibowli"
           />
@@ -247,13 +247,13 @@ export default function LeadForm({
 
       {/* Service Type Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Service Required *
         </label>
         <select
           {...register('service_type')}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
-            errors.service_type ? 'border-red-500' : 'border-gray-300'
+            errors.service_type ? 'border-red-500' : 'border-grey-300'
           }`}
         >
           <option value="">Select a service</option>
@@ -270,28 +270,28 @@ export default function LeadForm({
 
       {/* Sub Service Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Specific Brand/Type (Optional)
         </label>
         <input
           {...register('sub_service')}
           type="text"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+          className="w-full px-4 py-3 border border-white-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
           placeholder="e.g., FAAC, Benica, Roger"
         />
       </div>
 
       {/* Message Field */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white-700 mb-2">
           Message (Optional)
         </label>
         <div className="relative">
-          <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-white-400" />
           <textarea
             {...register('message')}
             rows={4}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+            className="w-full pl-10 pr-4 py-3 border border-white-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
             placeholder="Tell us about your requirements..."
           />
         </div>
@@ -337,7 +337,7 @@ export default function LeadForm({
       )}
 
       {/* Privacy Notice */}
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-white-500 text-center">
         By submitting this form, you agree to our privacy policy. We'll contact you via WhatsApp or phone within 24 hours.
       </p>
     </form>
