@@ -6,8 +6,8 @@
 
 import React, { useState, useRef } from 'react'
 import { Fingerprint, Clock, Users, BarChart3, Shield, Wrench, Building, School, Factory, Heart, ChevronRight } from 'lucide-react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+// import Header from '@/components/layout/Header'
+// import Footer from '@/components/layout/Footer'
 import LeadForm from '@/components/forms/LeadForm'
 import WhatsAppFloat from '@/components/common/WhatsAppFloat'
 
@@ -118,7 +118,7 @@ export default function BiometricAttendancePage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <WhatsAppFloat />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -376,7 +376,7 @@ export default function BiometricAttendancePage() {
         </section>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
