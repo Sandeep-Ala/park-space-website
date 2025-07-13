@@ -631,7 +631,6 @@ export default function BoomBarriersPage() {
               defaultSubService={selectedBrand.name}
               onSuccess={() => {
                 setIsFormVisible(false);
-                trackEvent('boom_barrier_lead_submitted', { brand: selectedBrand.name });
               }}
             />
           </div>
