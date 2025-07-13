@@ -127,7 +127,7 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin size={16} className="text-pink-400 flex-shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
-                  {COMPANY_INFO?.address || 'Hyderabad, Telangana, India'}
+                  {COMPANY_INFO?.address || 'Plot no: 8-93/2/1, Srinivasa Nagar ,Chintal, Qutubullapur,Hyderabad, Telangana, India'}
                 </span>
               </div>
             </div>
