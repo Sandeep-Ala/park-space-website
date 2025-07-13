@@ -8,7 +8,7 @@ export const COMPANY_INFO = {
   phone: '+916302789421', // Updated format for proper tel: links
   phoneDisplay: '+91 63027 89421', // Display format
   email: 'info@parkspace.in',
-  address: 'Hyderabad, Telangana, India',
+  address: 'Plot no: 8-93/2/1, Srinivasa Nagar ,Chintal, Qutubullapur, Hyderabad, Telangana, India',
   whatsapp: '916302789421', // Without + for WhatsApp links
   workingHours: 'Mon-Sat: 9:00 AM - 7:00 PM',
   established: '2019',

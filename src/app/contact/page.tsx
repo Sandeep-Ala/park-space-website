@@ -8,7 +8,7 @@ import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Contact Park Space - Get Quote for Parking Automation in Hyderabad',
-  description: 'Contact Park Space for boom barriers, CCTV, biometric systems in Hyderabad. Call +91-98765-43210 or WhatsApp for instant quote. 24/7 support available.',
+  description: 'Contact Park Space for boom barriers, CCTV, biometric systems in Hyderabad. Call +91-63027-89421 or WhatsApp for instant quote. 24/7 support available.',
   keywords: 'contact Park Space, boom barriers quote Hyderabad, CCTV installation contact, parking automation Hyderabad phone number',
   canonical: '/contact'
 })
@@ -46,8 +46,8 @@ export default function ContactPage() {
       icon: HeadphonesIcon,
       title: '24/7 Support',
       description: 'Emergency support and maintenance',
-      value: '+91 98765 43211',
-      action: 'tel:+919876543211',
+      value: '+91 63027 89421',
+      action: 'tel:+916302789421',
       actionText: 'Support Line',
       color: 'from-purple-500 to-pink-500'
     }
@@ -147,8 +147,8 @@ export default function ContactPage() {
                     <h3 className="text-xl font-semibold text-white mb-2">Office Address</h3>
                     <p className="text-gray-300 leading-relaxed">
                       Park Space Automation Solutions<br/>
-                      Plot No. 123, Industrial Area<br/>
-                      Kukatpally, Hyderabad - 500072<br/>
+                      Plot no: 8-93/2/1, Srinivasa Nagar ,Chintal, Qutubullapur<br/>
+                      Hyderabad - 500072<br/>
                       Telangana, India
                     </p>
                   </div>
@@ -201,7 +201,7 @@ export default function ContactPage() {
                 <h3 className="text-xl font-bold text-white mb-2">Emergency Support</h3>
                 <p className="text-purple-100 mb-4">24/7 available for urgent repairs</p>
                 <a 
-                  href="tel:+919876543211"
+                  href="tel:+916302789421"
                   className="inline-block px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                 >
                   Call Emergency: +91 98765 43211
