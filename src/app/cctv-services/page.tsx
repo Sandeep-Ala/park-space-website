@@ -635,7 +635,6 @@ export default function CCTVServicesPage() {
               defaultSubService={selectedBrand.name}
               onSuccess={() => {
                 setIsFormVisible(false);
-                trackEvent('cctv_lead_submitted', { brand: selectedBrand.name });
               }}
             />
           </div>
