@@ -110,6 +110,7 @@ export default function Footer() {
                 <Phone size={16} className="text-pink-400 flex-shrink-0" />
                 <a 
                   href={`tel:${COMPANY_INFO?.phone || '+916302789421'}`}
+
                   className="hover:text-pink-400 transition-colors duration-200"
                 >
                   {COMPANY_INFO?.phoneDisplay || '+91 63027 89421'}

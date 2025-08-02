@@ -15,7 +15,7 @@ const services = [
     id: 'boom-barriers',
     name: 'Boom Barriers',
     image: '/images/services/boom-barriers.jpeg',
-    shortDesc: 'Automated parking solutions with premium brands like FAAC, Benica, and Roger Technology',
+    shortDesc: 'Automated parking solutions with IOT Controller and Fast-Tag Integration',
     detailedDesc: 'Professional boom barrier installation with authorized dealer support for FAAC, Benica, Roger, Syrotech, and AGS brands. Complete automation solutions for parking management.',
     priceRange: '₹35,000 - ₹1,50,000',
     brands: ['FAAC', 'Benica', 'Roger Technology', 'Syrotech', 'AGS'],
@@ -55,6 +55,29 @@ const services = [
     brands: ['ZKTeco', 'Honeywell', 'Hikvision Access', 'Matrix', 'Suprema'],
     applications: ['Corporate Offices', 'Data Centers', 'Banks', 'Hotels', 'Residential Buildings'],
     route: '/door-access-controllers'
+  },
+  {
+    id: 'sliding-gate-motors',
+    name: 'Sliding Gate Motors',
+    image: '/images/services/sliding-gate-motors.jpg',
+    shortDesc: 'Heavy-duty sliding gate automation systems for large installations',
+    detailedDesc: 'Powerful sliding gate motor systems for heavy-duty applications with advanced safety features.',
+    priceRange: '₹25,000 - ₹1,00,000',
+    brands: ['FAAC', 'BFT', 'Nice', 'Came', 'Roger Technology'],
+    applications: ['Industrial Facilities', 'Large Residential Complexes', 'Warehouses', 'Corporate Campuses', 'Government Buildings'],
+    route: '/sliding-gate-motors'
+  },
+
+  {
+    id: 'swing-gates',
+    name: 'Swing Gates',
+    image: '/images/services/swing-gates.jpeg',
+    shortDesc: 'Automated swing gate systems for homes & offices with premium motors',
+    detailedDesc: 'Automated swing gate solutions for residential and commercial properties with reliable motor systems.',
+    priceRange: '₹22,000 - ₹1,50,000',
+    brands: ['FAAC', 'BFT', 'Nice', 'Came', 'V2'],
+    applications: ['Residential Villas', 'Corporate Offices', 'Industrial Gates', 'Community Entrances', 'Private Properties'],
+    route: '/swing-gates'
   },
   {
     id: 'flap-barriers',
@@ -99,28 +122,6 @@ const services = [
     brands: ['Cisco', 'D-Link', 'TP-Link', 'Ubiquiti', 'Netgear'],
     applications: ['Corporate Offices', 'Data Centers', 'Educational Institutions', 'Hotels', 'Retail Chains'],
     route: '/networking-systems'
-  },
-  {
-    id: 'swing-gates',
-    name: 'Swing Gates',
-    image: '/images/services/swing-gates.jpeg',
-    shortDesc: 'Automated swing gate systems for homes & offices with premium motors',
-    detailedDesc: 'Automated swing gate solutions for residential and commercial properties with reliable motor systems.',
-    priceRange: '₹22,000 - ₹1,50,000',
-    brands: ['FAAC', 'BFT', 'Nice', 'Came', 'V2'],
-    applications: ['Residential Villas', 'Corporate Offices', 'Industrial Gates', 'Community Entrances', 'Private Properties'],
-    route: '/swing-gates'
-  },
-  {
-    id: 'sliding-gate-motors',
-    name: 'Sliding Gate Motors',
-    image: '/images/services/sliding-gate-motors.jpg',
-    shortDesc: 'Heavy-duty sliding gate automation systems for large installations',
-    detailedDesc: 'Powerful sliding gate motor systems for heavy-duty applications with advanced safety features.',
-    priceRange: '₹25,000 - ₹1,00,000',
-    brands: ['FAAC', 'BFT', 'Nice', 'Came', 'Roger Technology'],
-    applications: ['Industrial Facilities', 'Large Residential Complexes', 'Warehouses', 'Corporate Campuses', 'Government Buildings'],
-    route: '/sliding-gate-motors'
   }
 ]
 
@@ -157,7 +158,7 @@ export default function HomePage() {
           <div className="text-center">
             {/* Hero Content */}
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              Automated Parking
+              Automated Parking & Security
               <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
                 Solutions
               </span>
@@ -180,7 +181,11 @@ export default function HomePage() {
                 <Phone size={20} />
                 <span>Call +91 63027 89421</span>
               </button>
+
             </div>
+            <h2 className="text-2xl md:text-2xl font-bold text-white mb-6">
+              Visiting & Service Charges Strating From 1699 + Taxes 
+            </h2>
           </div>
         </div>
       </section>
@@ -195,7 +200,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {services.map((service) => (
               <div
                 key={service.id}

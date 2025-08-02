@@ -38,6 +38,36 @@ import {
 
 // Enhanced Brand data for Boom Barriers
 const boomBarrierBrands = [
+   {
+    id: 'syrotech',
+    name: 'Syrotech',
+    logo: '/images/brands/syrotech-logo.png',
+    featured: true,
+    priceRange: '₹55,000 - ₹95,000',
+    description: 'Indian brand with excellent nationwide service network and cost-effective spare parts availability.',
+    features: [
+      'Extensive local service support',
+      'Cost-effective spare parts',
+      'Customizable configurations',
+      'GSM/SMS integration',
+      'Easy maintenance design',
+      'Indian conditions optimized',
+      'Quick service response',
+      'Budget-friendly options'
+    ],
+    specifications: {
+      'Opening Speed': '5-8 seconds',
+      'Boom Length': '3m - 6m options',
+      'Power Supply': '220V AC, 50Hz',
+      'Operating Temperature': '-10°C to +55°C',
+      'Motor Type': '220V AC Standard',
+      'Duty Cycle': '40% standard',
+      'Integration': 'Basic to Moderate Systems',
+      'Warranty': '1 Year + Service Contracts'
+    },
+    applications: ['Budget Residential', 'Small Commercial', 'Educational Institutions', 'Community Centers']
+  },
+ 
   {
     id: 'faac',
     name: 'FAAC',
@@ -125,35 +155,7 @@ const boomBarrierBrands = [
     },
     applications: ['Industrial Facilities', 'Logistics Centers', 'Toll Plazas', 'Heavy Traffic Areas']
   },
-  {
-    id: 'syrotech',
-    name: 'Syrotech',
-    logo: '/images/brands/syrotech-logo.png',
-    featured: true,
-    priceRange: '₹55,000 - ₹95,000',
-    description: 'Indian brand with excellent nationwide service network and cost-effective spare parts availability.',
-    features: [
-      'Extensive local service support',
-      'Cost-effective spare parts',
-      'Customizable configurations',
-      'GSM/SMS integration',
-      'Easy maintenance design',
-      'Indian conditions optimized',
-      'Quick service response',
-      'Budget-friendly options'
-    ],
-    specifications: {
-      'Opening Speed': '5-8 seconds',
-      'Boom Length': '3m - 6m options',
-      'Power Supply': '220V AC, 50Hz',
-      'Operating Temperature': '-10°C to +55°C',
-      'Motor Type': '220V AC Standard',
-      'Duty Cycle': '40% standard',
-      'Integration': 'Basic to Moderate Systems',
-      'Warranty': '1 Year + Service Contracts'
-    },
-    applications: ['Budget Residential', 'Small Commercial', 'Educational Institutions', 'Community Centers']
-  },
+
   {
     id: 'ags',
     name: 'AGS',
