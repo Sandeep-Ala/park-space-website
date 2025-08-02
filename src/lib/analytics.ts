@@ -323,12 +323,12 @@ export const initGA = () => {
   // GA is already initialized via direct script tag in layout.tsx
   // This function now just waits for gtag to be available
   return new Promise<void>((resolve) => {
-    if (typeof window !== 'undefined' && window.gtag) {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
       resolve()
     } else {
       // Wait for gtag to load
       const checkGtag = () => {
-        if (window.gtag) {
+        if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
           resolve()
         } else {
           setTimeout(checkGtag, 100)
