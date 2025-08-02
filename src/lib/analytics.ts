@@ -1,5 +1,6 @@
 // src/lib/analytics.ts
 // Google Analytics 4 integration for Park Space website
+// Updated to work with direct script implementation
 
 declare global {
   interface Window {
@@ -12,18 +13,18 @@ declare global {
 // CONFIGURATION
 // ========================
 
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || ''
+export const GA_TRACKING_ID = 'G-0P3FB0C5M2' // Updated with the new measurement ID
 
-// Check if analytics is enabled
+// Check if analytics is enabled and loaded
 export const isAnalyticsEnabled = (): boolean => {
-  return !!GA_TRACKING_ID && typeof window !== 'undefined'
+  return typeof window !== 'undefined' && typeof window.gtag === 'function'
 }
 
 // ========================
 // PAGE TRACKING
 // ========================
 
-// Track page views
+// Track page views (for manual page view tracking)
 export const trackPageView = (url: string, title?: string) => {
   if (!isAnalyticsEnabled()) return
   
@@ -102,61 +103,48 @@ export const trackLeadSubmission = (formData: {
   })
   
   // Also track as conversion
-  window.gtag('event', 'conversion', {
-    send_to: GA_TRACKING_ID,
-    value: 1,
-    currency: 'INR',
-    transaction_id: `lead_${Date.now()}`
-  })
+  if (window.gtag) {
+    window.gtag('event', 'conversion', {
+      send_to: GA_TRACKING_ID,
+      value: 1,
+      currency: 'INR',
+      transaction_id: `lead_${Date.now()}`
+    })
+  }
 }
 
 // Track WhatsApp redirects
 export const trackWhatsAppClick = (source: string, service?: string) => {
   trackEvent({
     action: 'whatsapp_click',
-    category: 'engagement',
-    label: source,
+    category: 'contact',
+    label: service || 'general',
     custom_parameters: {
       contact_method: 'whatsapp',
-      source_page: source,
-      service_interest: service || 'general',
+      click_source: source,
+      service_type: service,
       timestamp: new Date().toISOString()
     }
   })
 }
 
-// Track phone calls
-export const trackPhoneCall = (source: string, phone_number: string) => {
+// Track phone call clicks
+export const trackPhoneClick = (source: string, service?: string) => {
   trackEvent({
-    action: 'phone_call',
-    category: 'engagement',
-    label: source,
+    action: 'phone_click',
+    category: 'contact',
+    label: service || 'general',
     custom_parameters: {
       contact_method: 'phone',
-      phone_number: phone_number.replace(/\D/g, ''), // Store only digits
-      source_page: source,
-      timestamp: new Date().toISOString()
-    }
-  })
-}
-
-// Track email clicks
-export const trackEmailClick = (source: string, email_type: string = 'general') => {
-  trackEvent({
-    action: 'email_click',
-    category: 'engagement',
-    label: source,
-    custom_parameters: {
-      contact_method: 'email',
-      email_type: email_type,
-      source_page: source,
+      click_source: source,
+      service_type: service,
       timestamp: new Date().toISOString()
     }
   })
 }
 
 // ========================
-// USER BEHAVIOR TRACKING
+// BUSINESS TRACKING EVENTS
 // ========================
 
 // Track service page views
@@ -330,35 +318,31 @@ export const trackEngagementTime = (pagePath: string, timeSpent: number) => {
 // UTILITY FUNCTIONS
 // ========================
 
-// Initialize Google Analytics
+// Since GA is now loaded directly in HTML head, we just need to check if it's ready
 export const initGA = () => {
-  if (!GA_TRACKING_ID || typeof window === 'undefined') return
-  
-  // Create gtag script
-  const script = document.createElement('script')
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`
-  script.async = true
-  document.head.appendChild(script)
-  
-  // Initialize dataLayer and gtag
-  window.dataLayer = window.dataLayer || []
-  window.gtag = function() {
-    window.dataLayer.push(arguments)
-  }
-  
-  window.gtag('js', new Date())
-  window.gtag('config', GA_TRACKING_ID, {
-    send_page_view: false, // We'll handle page views manually
-    anonymize_ip: true, // GDPR compliance
-    allow_google_signals: false, // Disable ads features for privacy
-    cookie_flags: 'SameSite=None;Secure' // Modern cookie settings
+  // GA is already initialized via direct script tag in layout.tsx
+  // This function now just waits for gtag to be available
+  return new Promise<void>((resolve) => {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      resolve()
+    } else {
+      // Wait for gtag to load
+      const checkGtag = () => {
+        if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+          resolve()
+        } else {
+          setTimeout(checkGtag, 100)
+        }
+      }
+      checkGtag()
+    }
   })
 }
 
-// Check if user has consented to analytics
+// Check if user has consented to analytics (GDPR compliance)
 export const hasAnalyticsConsent = (): boolean => {
   if (typeof window === 'undefined') return false
-  return localStorage.getItem('analytics_consent') === 'true'
+  return localStorage.getItem('analytics_consent') !== 'false' // Default to true unless explicitly denied
 }
 
 // Set analytics consent
@@ -367,13 +351,9 @@ export const setAnalyticsConsent = (consent: boolean) => {
   
   localStorage.setItem('analytics_consent', consent.toString())
   
-  if (consent && GA_TRACKING_ID) {
+  if (window.gtag) {
     window.gtag('consent', 'update', {
-      analytics_storage: 'granted'
-    })
-  } else {
-    window.gtag('consent', 'update', {
-      analytics_storage: 'denied'
+      analytics_storage: consent ? 'granted' : 'denied'
     })
   }
 }
@@ -382,7 +362,7 @@ export const setAnalyticsConsent = (consent: boolean) => {
 export const trackOutboundLink = (url: string, linkText?: string) => {
   trackEvent({
     action: 'outbound_link',
-    category: 'engagement',
+    category: 'external_links',
     label: url,
     custom_parameters: {
       link_url: url,
@@ -392,74 +372,48 @@ export const trackOutboundLink = (url: string, linkText?: string) => {
   })
 }
 
-// Track file downloads
-export const trackFileDownload = (fileName: string, fileType: string) => {
-  trackEvent({
-    action: 'file_download',
-    category: 'engagement',
-    label: fileName,
-    custom_parameters: {
-      file_name: fileName,
-      file_type: fileType,
-      timestamp: new Date().toISOString()
-    }
-  })
-}
-
 // ========================
-// BUSINESS-SPECIFIC TRACKING
+// PARKSPACE SPECIFIC TRACKING
 // ========================
 
-// Track service area interest
-export const trackServiceAreaInterest = (area: string) => {
+// Track specific business events for Park Space
+export const trackBusinessEvent = (eventType: 'demo_request' | 'catalog_download' | 'price_inquiry', serviceType: string) => {
   trackEvent({
-    action: 'service_area_interest',
-    category: 'location',
-    label: area,
+    action: eventType,
+    category: 'business_conversion',
+    label: serviceType,
     custom_parameters: {
-      interested_area: area,
+      event_type: eventType,
+      service_type: serviceType,
       timestamp: new Date().toISOString()
     }
   })
 }
 
-// Track emergency support requests
-export const trackEmergencySupport = (contactMethod: string) => {
+// Track competitor comparison views
+export const trackCompetitorComparison = (serviceName: string, competitorBrand: string) => {
   trackEvent({
-    action: 'emergency_support',
-    category: 'support',
-    label: contactMethod,
+    action: 'competitor_comparison',
+    category: 'product_research',
+    label: `${serviceName}_vs_${competitorBrand}`,
     custom_parameters: {
-      contact_method: contactMethod,
-      priority: 'high',
+      service_name: serviceName,
+      competitor_brand: competitorBrand,
       timestamp: new Date().toISOString()
     }
   })
 }
 
-export default {
-  initGA,
-  trackPageView,
-  trackVirtualPageView,
-  trackEvent,
-  trackLeadSubmission,
-  trackWhatsAppClick,
-  trackPhoneCall,
-  trackEmailClick,
-  trackServiceView,
-  trackQuoteRequest,
-  trackBrandSelection,
-  trackScrollDepth,
-  trackError,
-  trackFormError,
-  trackInternalSearch,
-  trackQuoteGeneration,
-  trackEngagementTime,
-  trackOutboundLink,
-  trackFileDownload,
-  trackServiceAreaInterest,
-  trackEmergencySupport,
-  hasAnalyticsConsent,
-  setAnalyticsConsent,
-  isAnalyticsEnabled
+// Track installation location interest
+export const trackLocationInterest = (location: string, serviceType: string) => {
+  trackEvent({
+    action: 'location_interest',
+    category: 'geographic',
+    label: `${serviceType}_${location}`,
+    custom_parameters: {
+      service_type: serviceType,
+      target_location: location,
+      timestamp: new Date().toISOString()
+    }
+  })
 }

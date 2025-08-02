@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-// Enhanced root layout with SEO, Analytics, and Schema.org integration
+// Enhanced root layout with Google Analytics integration as per Google's instructions
 
 import './globals.css'
 import { Inter } from 'next/font/google'
@@ -40,6 +40,24 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Google Analytics - Direct Implementation as per Google Instructions */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0P3FB0C5M2"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-0P3FB0C5M2', {
+                send_page_view: false,
+                anonymize_ip: true,
+                allow_google_signals: false,
+                cookie_flags: 'SameSite=None;Secure'
+              });
+            `
+          }}
+        />
+
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -109,33 +127,23 @@ export default function RootLayout({
                 "telephone": SITE_CONFIG.business.phone,
                 "contactType": "customer service",
                 "email": SITE_CONFIG.business.email,
-                "availableLanguage": ["English", "Hindi", "Telugu"],
-                "areaServed": "IN",
-                "hoursAvailable": [{
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                  "opens": "09:00",
-                  "closes": "19:00"
-                }]
+                "areaServed": "Hyderabad",
+                "availableLanguage": ["English", "Hindi", "Telugu"]
               }],
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": SITE_CONFIG.business.address.streetAddress,
-                "addressLocality": SITE_CONFIG.business.address.addressLocality,
-                "addressRegion": SITE_CONFIG.business.address.addressRegion,
-                "postalCode": SITE_CONFIG.business.address.postalCode,
-                "addressCountry": SITE_CONFIG.business.address.addressCountry
+                "addressLocality": "Hyderabad",
+                "addressRegion": "Telangana",
+                "addressCountry": "IN"
               },
               "sameAs": [
-                SITE_CONFIG.social.facebook,
-                SITE_CONFIG.social.twitter,
-                SITE_CONFIG.social.linkedin,
-                SITE_CONFIG.social.youtube
+                "https://www.facebook.com/parkspace",
+                "https://www.linkedin.com/company/parkspace"
               ]
             })
           }}
         />
-        
+
         {/* Local Business Schema */}
         <script
           type="application/ld+json"
@@ -145,63 +153,7 @@ export default function RootLayout({
               "@type": "LocalBusiness",
               "@id": `${SITE_CONFIG.url}#business`,
               "name": SITE_CONFIG.business.name,
-              "description": SITE_CONFIG.description,
-              "url": SITE_CONFIG.url,
-              "telephone": SITE_CONFIG.business.phone,
-              "email": SITE_CONFIG.business.email,
-              "priceRange": SITE_CONFIG.business.priceRange,
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": SITE_CONFIG.business.address.streetAddress,
-                "addressLocality": SITE_CONFIG.business.address.addressLocality,
-                "addressRegion": SITE_CONFIG.business.address.addressRegion,
-                "postalCode": SITE_CONFIG.business.address.postalCode,
-                "addressCountry": SITE_CONFIG.business.address.addressCountry
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": "17.4485",
-                "longitude": "78.4048"
-              },
-              "areaServed": {
-                "@type": "City",
-                "name": "Hyderabad",
-                "sameAs": "https://en.wikipedia.org/wiki/Hyderabad"
-              },
-              "serviceArea": {
-                "@type": "GeoCircle",
-                "geoMidpoint": {
-                  "@type": "GeoCoordinates",
-                  "latitude": "17.4485",
-                  "longitude": "78.4048"
-                },
-                "geoRadius": "100000"
-              },
-              "openingHours": [
-                "Mo-Fr 09:00-19:00",
-                "Sa 09:00-17:00",
-                "Su 10:00-16:00"
-              ],
-              "sameAs": [
-                SITE_CONFIG.social.facebook,
-                SITE_CONFIG.social.twitter,
-                SITE_CONFIG.social.linkedin,
-                SITE_CONFIG.social.youtube
-              ]
-            })
-          }}
-        />
-        
-        {/* Service Schema for Primary Services */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Service",
-              "@id": `${SITE_CONFIG.url}/boom-barriers#service`,
-              "name": "Boom Barrier Installation Services",
-              "description": "Professional boom barrier installation and maintenance services in Hyderabad. Authorized FAAC dealer with expert technicians.",
+              "description": "Professional installation of boom barriers, CCTV systems, biometric attendance, and parking automation solutions. Authorized FAAC dealer with expert technicians.",
               "url": `${SITE_CONFIG.url}/boom-barriers`,
               "category": "Security Systems",
               "provider": {
@@ -220,7 +172,7 @@ export default function RootLayout({
       </head>
       
       <body className={`${inter.className} antialiased`}>
-        {/* Analytics Provider */}
+        {/* Analytics Provider - Now works with direct GA script */}
         <AnalyticsProvider />
         
         {/* Schema Provider for dynamic schemas */}

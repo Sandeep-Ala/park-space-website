@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Fingerprint, 
@@ -28,7 +28,16 @@ import {
   Smartphone
 } from 'lucide-react';
 import LeadForm from '@/components/forms/LeadForm';
-import { trackEvent } from '@/lib/analytics';
+import { 
+  trackServiceView,
+  trackBrandSelection,
+  trackWhatsAppClick,
+  trackPhoneClick,
+  trackQuoteRequest,
+  trackEvent,
+  trackLeadSubmission,
+  trackBusinessEvent
+} from '@/lib/analytics';
 
 // Enhanced Brand data for Biometric Attendance Systems
 const biometricBrands = [
@@ -269,25 +278,177 @@ const services = [
 ];
 
 export default function BiometricAttendancePage() {
-  const [selectedBrand, setSelectedBrand] = useState(biometricBrands[0]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const handleBrandSelect = (brand: typeof biometricBrands[0]) => {
-    setSelectedBrand(brand);
-  };
-
-  const handleCTAClick = (action: string) => {
-    
-    if (action === 'get_quote') {
-      setIsFormVisible(true);
-    } else if (action === 'whatsapp') {
-      const message = `Hi! I'm interested in ${selectedBrand.name} Biometric Attendance System. Price range: ${selectedBrand.priceRange}. Please provide detailed information and quotation.`;
-      window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank');
-    } else if (action === 'call') {
-      window.open('tel:+916302789421', '_self');
-    }
-  };
-
+   const [selectedBrand, setSelectedBrand] = useState(biometricBrands[0]);
+   const [isFormVisible, setIsFormVisible] = useState(false);
+ 
+   // =============================
+   // ANALYTICS TRACKING
+   // =============================
+ 
+   // Track page view when component mounts
+   useEffect(() => {
+     trackServiceView('biometric-attendance', 'direct-traffic');
+   }, []);
+ 
+   // Track brand selection with analytics
+   const handleBrandSelect = (brand: typeof biometricBrands[0]) => {
+     setSelectedBrand(brand);
+     
+     // Track brand selection event
+     trackBrandSelection('biometric-attendance', brand.name);
+     
+     // Track brand interest event
+     trackEvent({
+       action: 'brand_interest',
+       category: 'product_interaction',
+       label: `biometric-attendance-${brand.name.toLowerCase()}`,
+       custom_parameters: {
+         brand_name: brand.name,
+         price_range: brand.priceRange,
+         featured: brand.featured,
+         service_type: 'biometric-attendance'
+       }
+     });
+   };
+ 
+   // Track CTA clicks with detailed analytics
+   const handleCTAClick = (action: string, source?: string) => {
+     const baseParams = {
+       service_type: 'biometric-attendance',
+       selected_brand: selectedBrand.name,
+       brand_price_range: selectedBrand.priceRange,
+       click_source: source || 'unknown',
+       page_section: source || 'general'
+     };
+ 
+     if (action === 'get_quote') {
+       // Track quote request
+       trackQuoteRequest('biometric-attendance', selectedBrand.name);
+       
+       // Track business conversion event
+       trackBusinessEvent('demo_request', 'biometric-attendance');
+       
+       // Track detailed quote event
+       trackEvent({
+         action: 'quote_form_opened',
+         category: 'lead_generation',
+         label: `biometric-attendance-${selectedBrand.name}`,
+         custom_parameters: {
+           ...baseParams,
+           form_type: 'quote_request',
+           conversion_step: 'form_opened'
+         }
+       });
+       
+       setIsFormVisible(true);
+       
+     } else if (action === 'whatsapp') {
+       // Track WhatsApp click
+       trackWhatsAppClick('biometric-attendance-page', 'biometric-attendance');
+       
+       // Track messaging engagement
+       trackEvent({
+         action: 'whatsapp_engagement',
+         category: 'contact',
+         label: 'biometric-attendance-whatsapp',
+         custom_parameters: {
+           ...baseParams,
+           contact_method: 'whatsapp',
+           engagement_type: 'instant_messaging'
+         }
+       });
+       
+       const message = `Hi! I'm interested in ${selectedBrand.name} Boom Barriers. Price range: ${selectedBrand.priceRange}. Please provide detailed information and quotation.`;
+       window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank');
+       
+     } else if (action === 'call') {
+       // Track phone click
+       trackPhoneClick('biometric-attendance-page', 'biometric-attendance');
+       
+       // Track call engagement
+       trackEvent({
+         action: 'phone_engagement',
+         category: 'contact',
+         label: 'biometric-attendance-call',
+         custom_parameters: {
+           ...baseParams,
+           contact_method: 'phone',
+           engagement_type: 'voice_call'
+         }
+       });
+       
+       window.open('tel:+916302789421', '_self');
+     }
+   };
+ 
+   // Track service interest events
+   const handleServiceClick = (serviceTitle: string) => {
+     trackEvent({
+       action: 'service_interest',
+       category: 'service_exploration',
+       label: `biometric-attendance-${serviceTitle.toLowerCase().replace(/\s+/g, '-')}`,
+       custom_parameters: {
+         service_type: 'biometric-attendance',
+         service_category: serviceTitle,
+         selected_brand: selectedBrand.name
+       }
+     });
+   };
+ 
+   // Track application interest
+   const handleApplicationClick = (applicationTitle: string) => {
+     trackEvent({
+       action: 'application_interest',
+       category: 'use_case_exploration',
+       label: `biometric-attendance-${applicationTitle.toLowerCase().replace(/\s+/g, '-')}`,
+       custom_parameters: {
+         service_type: 'biometric-attendance',
+         application_type: applicationTitle,
+         selected_brand: selectedBrand.name
+       }
+     });
+   };
+ 
+   // Track specification views
+   const handleSpecificationView = () => {
+     trackEvent({
+       action: 'specification_view',
+       category: 'product_research',
+       label: `biometric-attendance-${selectedBrand.name}`,
+       custom_parameters: {
+         brand_name: selectedBrand.name,
+         service_type: 'biometric-attendance',
+         research_depth: 'technical_specifications'
+       }
+     });
+   };
+ 
+   // Track successful form submission
+   const handleFormSuccess = (formData: any) => {
+     // Track lead submission
+     trackLeadSubmission({
+       service_type: 'biometric-attendance',
+       lead_source: 'biometric-attendance-page-form',
+       phone_number: formData.phone,
+       form_location: 'biometric-attendance-service-page'
+     });
+ 
+     // Track conversion completion
+     trackEvent({
+       action: 'lead_conversion_complete',
+       category: 'conversion',
+       label: 'biometric-attendance-form-success',
+       value: 1,
+       custom_parameters: {
+         service_type: 'biometric-attendance',
+         selected_brand: selectedBrand.name,
+         lead_quality: 'hot',
+         conversion_path: 'service-page-form'
+       }
+     });
+ 
+     setIsFormVisible(false);
+   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
       {/* Hero Section */}
@@ -324,14 +485,16 @@ export default function BiometricAttendancePage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={() => handleCTAClick('get_quote')}
+                  onClick={() => handleCTAClick('get_quote', 'hero-section')}
+
                   className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   Get Free Quote
                   <ArrowRight className="h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => handleCTAClick('whatsapp')}
+                  onClick={() => handleCTAClick('whatsapp', 'hero-section')}
+
                   className="bg-green-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="h-5 w-5" />
@@ -488,6 +651,8 @@ export default function BiometricAttendancePage() {
                       <span
                         key={index}
                         className="bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-purple-100 px-3 py-1 rounded-full text-sm font-medium"
+                        onClick={() => handleApplicationClick(app)}
+                      
                       >
                         {app}
                       </span>
@@ -520,6 +685,8 @@ export default function BiometricAttendancePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-purple-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-500/30"
+                onClick={() => handleServiceClick(service.title)}
+              
               >
                 <div className="mb-6">{service.icon}</div>
                 <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
@@ -558,6 +725,8 @@ export default function BiometricAttendancePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-purple-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-500/30"
+                onClick={() => handleApplicationClick(application.title)}
+              
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center mb-4">
                   <application.icon className="h-6 w-6 text-white" />
@@ -622,7 +791,20 @@ export default function BiometricAttendancePage() {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-white">Get Biometric Quote</h3>
               <button
-                onClick={() => setIsFormVisible(false)}
+                onClick={() => {
+                  setIsFormVisible(false);
+                  // Track form close event
+                  trackEvent({
+                    action: 'form_closed',
+                    category: 'lead_generation',
+                    label: 'Bio-metric-Attendance-quote-form',
+                    custom_parameters: {
+                      service_type: 'biometric-attendance',
+                      selected_brand: selectedBrand.name,
+                      close_method: 'close_button'
+                    }
+                  });
+                }}
                 className="text-purple-100 hover:text-white text-2xl"
               >
                 ✕
@@ -641,7 +823,8 @@ export default function BiometricAttendancePage() {
 
       {/* Floating WhatsApp Button */}
       <button
-        onClick={() => handleCTAClick('whatsapp')}
+        onClick={() => handleCTAClick('whatsapp', 'floating-button')}
+
         className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-40"
       >
         <MessageCircle size={24} />
