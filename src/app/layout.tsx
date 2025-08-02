@@ -97,6 +97,9 @@ export default function RootLayout({
         <meta name="contact" content="info@parkspace.com" />
         <meta name="author" content="Park Space Automation Solutions" />
         <meta name="copyright" content="© 2025 Park Space Automation Solutions" />
+         {/* ✅ ENHANCED: Crawling Instructions */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
         
         {/* Verification Tags (add your verification codes) */}
         {process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION && (
@@ -108,7 +111,14 @@ export default function RootLayout({
         
         {/* Preload Critical Resources */}
         <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
+           
+        {/* DNS Prefetch for Performance */}
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         
+        {/* ✅ ADDED: Canonical Link */}
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL} />
+
         {/* Structured Data - Organization Schema */}
         <script
           type="application/ld+json"
