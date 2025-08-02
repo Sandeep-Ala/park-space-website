@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-// Enhanced root layout with Google Analytics integration as per Google's instructions
+// ✅ STANDALONE SOLUTION: No external dependencies, hard-coded indexing
 
 import './globals.css'
 import { Inter } from 'next/font/google'
@@ -7,34 +7,75 @@ import { Metadata } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import WhatsAppFloat from '@/components/common/WhatsAppFloat'
-import AnalyticsProvider from '@/components/providers/AnalyticsProvider'
-import SchemaProvider from '@/components/providers/SchemaProvider'
-import { generateMetadata as generateSEOMetadata, SITE_CONFIG } from '@/lib/seo'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// Root metadata using enhanced SEO system
+// ✅ HARD-CODED metadata with FORCED indexing (no external dependencies)
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
-  ...generateSEOMetadata({
-    title: 'Park Space - Automated Parking Solutions in Hyderabad | Boom Barriers, CCTV, Biometric Systems',
-    description: 'Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad. FAAC authorized dealer. Expert installation & 24/7 support. Get free quote.',
-    keywords: [
-      'boom barriers Hyderabad',
-      'parking automation Hyderabad',
-      'FAAC dealers Hyderabad',
-      'CCTV installation Hyderabad',
-      'biometric attendance systems',
-      'automated parking solutions',
-      'gate automation Hyderabad',
-      'security systems Hyderabad'
-    ],
-    canonical: '/',
-    noIndex: false // ✅ EXPLICITLY FORCE INDEXING
-  }),
+  metadataBase: new URL('https://parkspace.in'),
+  title: 'Park Space - Automated Parking Solutions in Hyderabad | Boom Barriers, CCTV, Biometric Systems',
+  description: 'Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad. FAAC authorized dealer. Expert installation & 24/7 support. Get free quote.',
+  keywords: 'boom barriers Hyderabad, parking automation solutions, CCTV installation Hyderabad, biometric systems, FAAC dealer Hyderabad, automated parking systems, access control systems, parking management Telangana',
+  authors: [{ name: 'Park Space Automation Solutions' }],
+  creator: 'Park Space Automation Solutions',
+  publisher: 'Park Space Automation Solutions',
   
-  // ✅ CRITICAL: Override any potential noindex directives
-  robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+  // ✅ CRITICAL: FORCE indexing with explicit robots directive
+  robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
+  
+  // Open Graph
+  openGraph: {
+    type: 'website',
+    url: 'https://parkspace.in',
+    title: 'Park Space - Automated Parking Solutions in Hyderabad',
+    description: 'Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad. FAAC authorized dealer.',
+    siteName: 'Park Space',
+    images: [
+      {
+        url: 'https://parkspace.in/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Park Space - Automated Parking Solutions in Hyderabad'
+      }
+    ],
+    locale: 'en_IN'
+  },
+  
+  // Twitter
+  twitter: {
+    card: 'summary_large_image',
+    site: '@parkspacetech',
+    creator: '@parkspacetech',
+    title: 'Park Space - Automated Parking Solutions in Hyderabad',
+    description: 'Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad.',
+    images: ['https://parkspace.in/images/og-image.jpg']
+  },
+  
+  // Additional metadata
+  alternates: {
+    canonical: 'https://parkspace.in'
+  },
+  
+  // Verification - HARD-CODED
+  verification: {
+    google: 'WQ5pp2ZcguVqttTSVh9In061Mv6bDqcHJSqhJFmijdw'
+  },
+  
+  // Enhanced metadata
+  other: {
+    'revisit-after': '7 days',
+    'distribution': 'global',
+    'rating': 'general',
+    'contact': 'info@parkspace.in',
+    'copyright': '© 2025 Park Space Automation Solutions',
+    'geo.region': 'IN-TG',
+    'geo.placename': 'Hyderabad',
+    'geo.position': '17.4485;78.4048',
+    'ICBM': '17.4485, 78.4048',
+    'format-detection': 'telephone=yes',
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes'
+  }
 }
 
 export default function RootLayout({
@@ -45,37 +86,23 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Google Analytics - Direct Implementation as per Google Instructions */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0P3FB0C5M2"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-0P3FB0C5M2', {
-                send_page_view: false,
-                anonymize_ip: true,
-                allow_google_signals: false,
-                cookie_flags: 'SameSite=None;Secure'
-              });
-            `
-          }}
-        />
-
-        {/* Preconnect to external domains for performance */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* ✅ CRITICAL: Multiple robots directives to ensure indexing */}
+        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+        <meta name="googlebot" content="index,follow,max-video-preview:-1,max-image-preview:large,max-snippet:-1" />
+        <meta name="bingbot" content="index,follow" />
         
-        {/* DNS prefetch for external resources */}
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://wa.me" />
+        {/* ✅ HARD-CODED Google verification */}
+        <meta name="google-site-verification" content="WQ5pp2ZcguVqttTSVh9In061Mv6bDqcHJSqhJFmijdw" />
         
-        {/* Favicon and App Icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        {/* Essential Meta Tags */}
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Favicon and Icons */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Theme Color for Mobile Browsers */}
@@ -99,33 +126,36 @@ export default function RootLayout({
         <meta name="revisit-after" content="7 days" />
         
         {/* Contact Information */}
-        <meta name="contact" content="info@parkspace.com" />
+        <meta name="contact" content="info@parkspace.in" />
         <meta name="author" content="Park Space Automation Solutions" />
         <meta name="copyright" content="© 2025 Park Space Automation Solutions" />
-         {/* ✅ ENHANCED: Crawling Instructions */}
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
-        
-        {/* ✅ CRITICAL: Explicit robots directive to FORCE indexing */}
-        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-        <meta name="googlebot" content="index,follow,max-video-preview:-1,max-image-preview:large,max-snippet:-1" />
-        
-        {/* ✅ FIXED: Google Site Verification - Only verification code */}
-        <meta name="google-site-verification" content="WQ5pp2ZcguVqttTSVh9In061Mv6bDqcHJSqhJFmijdw" />
-  
-        {process.env.NEXT_PUBLIC_BING_VERIFICATION && (
-          <meta name="msvalidate.01" content={process.env.NEXT_PUBLIC_BING_VERIFICATION} />
-        )}
         
         {/* Preload Critical Resources */}
         <link rel="preload" href="/images/logo.png" as="image" type="image/png" />
-           
+        
         {/* DNS Prefetch for Performance */}
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//wa.me" />
         
-        {/* ✅ ADDED: Canonical Link */}
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL} />
+        {/* Canonical Link */}
+        <link rel="canonical" href="https://parkspace.in" />
+        
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0P3FB0C5M2"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-0P3FB0C5M2', {
+                send_page_view: true,
+                anonymize_ip: true
+              });
+            `
+          }}
+        />
 
         {/* Structured Data - Organization Schema */}
         <script
@@ -134,24 +164,24 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "@id": `${SITE_CONFIG.url}#organization`,
-              "name": SITE_CONFIG.business.name,
-              "alternateName": SITE_CONFIG.name,
-              "description": SITE_CONFIG.description,
-              "url": SITE_CONFIG.url,
-              "logo": `${SITE_CONFIG.url}/images/logo.png`,
+              "@id": "https://parkspace.in#organization",
+              "name": "Park Space Automation Solutions",
+              "alternateName": "Park Space",
+              "description": "Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad",
+              "url": "https://parkspace.in",
+              "logo": "https://parkspace.in/images/logo.png",
               "contactPoint": [{
                 "@type": "ContactPoint",
-                "telephone": SITE_CONFIG.business.phone,
+                "telephone": "+91-63027-89421",
                 "contactType": "customer service",
-                "email": SITE_CONFIG.business.email,
+                "email": "info@parkspace.in",
                 "areaServed": "Hyderabad",
                 "availableLanguage": ["English", "Hindi", "Telugu"]
               }],
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Hyderabad",
-                "addressRegion": "Telangana",
+                "addressRegion": "Telangana", 
                 "addressCountry": "IN"
               },
               "sameAs": [
@@ -169,33 +199,35 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "@id": `${SITE_CONFIG.url}#business`,
-              "name": SITE_CONFIG.business.name,
-              "description": "Professional installation of boom barriers, CCTV systems, biometric attendance, and parking automation solutions. Authorized FAAC dealer with expert technicians.",
-              "url": `${SITE_CONFIG.url}/boom-barriers`,
-              "category": "Security Systems",
-              "provider": {
-                "@type": "LocalBusiness",
-                "@id": `${SITE_CONFIG.url}#business`
+              "@id": "https://parkspace.in#business",
+              "name": "Park Space Automation Solutions",
+              "description": "Professional installation of boom barriers, CCTV systems, biometric attendance, and parking automation solutions in Hyderabad. Authorized FAAC dealer.",
+              "url": "https://parkspace.in",
+              "telephone": "+91-63027-89421",
+              "email": "info@parkspace.in",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Hyderabad",
+                "addressRegion": "Telangana",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "17.4485",
+                "longitude": "78.4048"
               },
               "areaServed": {
                 "@type": "City",
                 "name": "Hyderabad"
               },
-              "serviceType": "Installation and Maintenance",
-              "serviceOutput": "Automated parking and vehicle access control systems"
+              "serviceType": "Parking Automation & Security Systems",
+              "priceRange": "$$"
             })
           }}
         />
       </head>
       
       <body className={`${inter.className} antialiased`}>
-        {/* Analytics Provider - Now works with direct GA script */}
-        <AnalyticsProvider />
-        
-        {/* Schema Provider for dynamic schemas */}
-        <SchemaProvider />
-        
         {/* Skip to main content for accessibility */}
         <a 
           href="#main-content" 
@@ -218,37 +250,7 @@ export default function RootLayout({
         {/* Floating WhatsApp Button */}
         <WhatsAppFloat />
         
-        {/* Performance Monitoring Script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Simple performance monitoring
-              window.addEventListener('load', function() {
-                if ('performance' in window) {
-                  setTimeout(function() {
-                    const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-                    if (window.gtag && loadTime > 0) {
-                      gtag('event', 'page_load_time', {
-                        value: Math.round(loadTime),
-                        event_category: 'performance'
-                      });
-                    }
-                  }, 0);
-                }
-              });
-              
-              // Error tracking
-              window.addEventListener('error', function(e) {
-                if (window.gtag) {
-                  gtag('event', 'exception', {
-                    description: e.message,
-                    fatal: false
-                  });
-                }
-              });
-            `
-          }}
-        />
+        
       </body>
     </html>
   )
