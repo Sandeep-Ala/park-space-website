@@ -28,8 +28,13 @@ export const metadata: Metadata = {
       'automated parking solutions',
       'gate automation Hyderabad',
       'security systems Hyderabad'
-    ]
-  })
+    ],
+    canonical: '/',
+    noIndex: false // ✅ EXPLICITLY FORCE INDEXING
+  }),
+  
+  // ✅ CRITICAL: Override any potential noindex directives
+  robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
 }
 
 export default function RootLayout({
@@ -101,10 +106,13 @@ export default function RootLayout({
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
         
-        {/* Verification Tags (add your verification codes) */}
-        {process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION && (
-          <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION} />
-        )}
+        {/* ✅ CRITICAL: Explicit robots directive to FORCE indexing */}
+        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+        <meta name="googlebot" content="index,follow,max-video-preview:-1,max-image-preview:large,max-snippet:-1" />
+        
+        {/* ✅ FIXED: Google Site Verification - Only verification code */}
+        <meta name="google-site-verification" content="WQ5pp2ZcguVqttTSVh9In061Mv6bDqcHJSqhJFmijdw" />
+  
         {process.env.NEXT_PUBLIC_BING_VERIFICATION && (
           <meta name="msvalidate.01" content={process.env.NEXT_PUBLIC_BING_VERIFICATION} />
         )}

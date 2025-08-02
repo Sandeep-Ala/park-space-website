@@ -128,9 +128,8 @@ export const generateMetadata = ({
     publisher: SITE_CONFIG.business.name,
     
     // ✅ ENHANCED: Robots directive for better indexing
-    robots: noIndex 
-      ? 'noindex,nofollow' 
-      : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
+   // ✅ CRITICAL FIX: FORCE index,follow for ALL pages (never noindex)
+    robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
     
     // Open Graph
     openGraph: {
