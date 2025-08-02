@@ -1,34 +1,50 @@
 // src/components/providers/AnalyticsProvider.tsx
 // Client-side analytics provider for Google Analytics integration
+// Updated to work with direct script implementation
 
 'use client'
 
 import { useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { initGA, trackPageView, trackVirtualPageView, hasAnalyticsConsent, setAnalyticsConsent } from '@/lib/analytics'
+import { 
+  trackVirtualPageView, 
+  hasAnalyticsConsent, 
+  setAnalyticsConsent,
+  isAnalyticsEnabled,
+  initGA
+} from '@/lib/analytics'
 
 export default function AnalyticsProvider() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Initialize Google Analytics on component mount
+  // Initialize analytics consent and wait for GA to load
   useEffect(() => {
-    // Check if user has given consent (GDPR compliance)
-    const hasConsent = hasAnalyticsConsent()
-    
-    if (hasConsent) {
-      initGA()
-    } else {
-      // Show consent banner or initialize with consent denied
-      // For now, we'll initialize with consent granted (you can add a consent banner later)
-      setAnalyticsConsent(true)
-      initGA()
+    const setupAnalytics = async () => {
+      // Check if user has given consent (GDPR compliance)
+      const hasConsent = hasAnalyticsConsent()
+      
+      if (!hasConsent) {
+        // For now, we'll assume consent (you can add a consent banner later)
+        setAnalyticsConsent(true)
+      }
+
+      // Wait for GA to be ready (since it's loaded directly in head)
+      await initGA()
+      
+      // Send initial page view
+      if (isAnalyticsEnabled()) {
+        const pageTitle = document.title || 'Park Space'
+        trackVirtualPageView(pathname, pageTitle)
+      }
     }
-  }, [])
+
+    setupAnalytics()
+  }, [pathname]) // Only run when pathname changes or on initial load
 
   // Track page views when route changes
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.gtag) {
+    if (isAnalyticsEnabled()) {
       const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '')
       
       // Get page title
@@ -42,12 +58,16 @@ export default function AnalyticsProvider() {
         const utmSource = searchParams.get('utm_source')
         const utmMedium = searchParams.get('utm_medium')
         const utmCampaign = searchParams.get('utm_campaign')
+        const utmContent = searchParams.get('utm_content')
+        const utmTerm = searchParams.get('utm_term')
         
         if (utmSource && window.gtag) {
           window.gtag('event', 'campaign_tracking', {
             utm_source: utmSource,
             utm_medium: utmMedium,
             utm_campaign: utmCampaign,
+            utm_content: utmContent,
+            utm_term: utmTerm,
             page_path: pathname
           })
         }
@@ -65,6 +85,8 @@ export default function AnalyticsProvider() {
     }
 
     const handleScroll = () => {
+      if (!isAnalyticsEnabled()) return
+
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
@@ -79,7 +101,7 @@ export default function AnalyticsProvider() {
           if (window.gtag) {
             window.gtag('event', 'scroll_depth', {
               event_category: 'engagement',
-              event_label: `${milestone}%`,
+              event_label: `${milestoneNum}%`,
               value: milestoneNum,
               page_path: pathname
             })
@@ -88,105 +110,84 @@ export default function AnalyticsProvider() {
       })
     }
 
+    // Add scroll listener
     window.addEventListener('scroll', handleScroll, { passive: true })
     
+    // Cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [pathname])
 
-  // Track engagement time
+  // Track time on page
   useEffect(() => {
     const startTime = Date.now()
     
-    const trackEngagementTime = () => {
-      const engagementTime = Date.now() - startTime
+    const handleBeforeUnload = () => {
+      if (isAnalyticsEnabled()) {
+        const timeSpent = Date.now() - startTime
+        
+        // Only track if user spent more than 10 seconds on page
+        if (timeSpent > 10000) {
+          window.gtag('event', 'page_engagement_time', {
+            event_category: 'engagement',
+            value: Math.round(timeSpent / 1000),
+            page_path: pathname
+          })
+        }
+      }
+    }
+
+    // Track when user leaves the page
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    
+    // Also track on route change (for SPA navigation)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
       
-      // Only track if user spent more than 10 seconds on page
-      if (engagementTime > 10000 && window.gtag) {
-        window.gtag('event', 'engagement_time', {
+      // Track time spent when component unmounts (route change)
+      const timeSpent = Date.now() - startTime
+      if (isAnalyticsEnabled() && timeSpent > 10000) {
+        window.gtag('event', 'page_engagement_time', {
           event_category: 'engagement',
-          value: Math.round(engagementTime / 1000), // Convert to seconds
-          page_path: pathname,
-          custom_parameter_1: 'time_spent_seconds'
+          value: Math.round(timeSpent / 1000),
+          page_path: pathname
         })
       }
     }
-
-    // Track engagement time when user leaves the page
-    const handleBeforeUnload = () => {
-      trackEngagementTime()
-    }
-
-    // Track engagement time when user becomes inactive
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        trackEngagementTime()
-      }
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      trackEngagementTime() // Track when component unmounts
-    }
   }, [pathname])
 
-  // Track outbound link clicks
+  // Track clicks on external links
   useEffect(() => {
-    const handleLinkClick = (event: Event) => {
-      const target = event.target as HTMLAnchorElement
+    const handleClick = (event: MouseEvent) => {
+      if (!isAnalyticsEnabled()) return
+
+      const target = event.target as HTMLElement
+      const link = target.closest('a')
       
-      if (target.tagName === 'A' && target.href) {
-        const isOutbound = !target.href.includes(window.location.hostname)
-        const isWhatsApp = target.href.includes('wa.me') || target.href.includes('whatsapp.com')
-        const isPhone = target.href.startsWith('tel:')
-        const isEmail = target.href.startsWith('mailto:')
+      if (link && link.href) {
+        const url = new URL(link.href, window.location.href)
+        const isExternal = url.hostname !== window.location.hostname
         
-        if (isOutbound && window.gtag) {
+        if (isExternal) {
           window.gtag('event', 'outbound_link', {
-            event_category: 'engagement',
-            event_label: target.href,
-            page_path: pathname
-          })
-        }
-        
-        if (isWhatsApp && window.gtag) {
-          window.gtag('event', 'whatsapp_click', {
-            event_category: 'engagement',
-            event_label: 'whatsapp_link',
-            page_path: pathname
-          })
-        }
-        
-        if (isPhone && window.gtag) {
-          window.gtag('event', 'phone_click', {
-            event_category: 'engagement',
-            event_label: target.href,
-            page_path: pathname
-          })
-        }
-        
-        if (isEmail && window.gtag) {
-          window.gtag('event', 'email_click', {
-            event_category: 'engagement',
-            event_label: target.href,
+            event_category: 'external_links',
+            event_label: url.hostname,
+            link_url: link.href,
+            link_text: link.textContent?.trim() || '',
             page_path: pathname
           })
         }
       }
     }
 
-    document.addEventListener('click', handleLinkClick)
+    document.addEventListener('click', handleClick, true)
     
     return () => {
-      document.removeEventListener('click', handleLinkClick)
+      document.removeEventListener('click', handleClick, true)
     }
   }, [pathname])
 
-  // This component doesn't render anything visible
+  // This component doesn't render anything
   return null
 }

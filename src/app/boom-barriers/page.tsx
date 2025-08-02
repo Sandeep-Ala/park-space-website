@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Shield, 
@@ -25,7 +25,16 @@ import {
   Truck
 } from 'lucide-react';
 import LeadForm from '@/components/forms/LeadForm';
-import { trackEvent } from '@/lib/analytics';
+import { 
+  trackServiceView,
+  trackBrandSelection,
+  trackWhatsAppClick,
+  trackPhoneClick,
+  trackQuoteRequest,
+  trackEvent,
+  trackLeadSubmission,
+  trackBusinessEvent
+} from '@/lib/analytics';
 
 // Enhanced Brand data for Boom Barriers
 const boomBarrierBrands = [
@@ -269,22 +278,174 @@ export default function BoomBarriersPage() {
   const [selectedBrand, setSelectedBrand] = useState(boomBarrierBrands[0]);
   const [isFormVisible, setIsFormVisible] = useState(false);
 
+  // =============================
+  // ANALYTICS TRACKING
+  // =============================
+
+  // Track page view when component mounts
+  useEffect(() => {
+    trackServiceView('boom-barriers', 'direct-traffic');
+  }, []);
+
+  // Track brand selection with analytics
   const handleBrandSelect = (brand: typeof boomBarrierBrands[0]) => {
     setSelectedBrand(brand);
-     };
-
-  const handleCTAClick = (action: string) => {
     
+    // Track brand selection event
+    trackBrandSelection('boom-barriers', brand.name);
+    
+    // Track brand interest event
+    trackEvent({
+      action: 'brand_interest',
+      category: 'product_interaction',
+      label: `boom-barriers-${brand.name.toLowerCase()}`,
+      custom_parameters: {
+        brand_name: brand.name,
+        price_range: brand.priceRange,
+        featured: brand.featured,
+        service_type: 'boom-barriers'
+      }
+    });
+  };
+
+  // Track CTA clicks with detailed analytics
+  const handleCTAClick = (action: string, source?: string) => {
+    const baseParams = {
+      service_type: 'boom-barriers',
+      selected_brand: selectedBrand.name,
+      brand_price_range: selectedBrand.priceRange,
+      click_source: source || 'unknown',
+      page_section: source || 'general'
+    };
+
     if (action === 'get_quote') {
+      // Track quote request
+      trackQuoteRequest('boom-barriers', selectedBrand.name);
+      
+      // Track business conversion event
+      trackBusinessEvent('demo_request', 'boom-barriers');
+      
+      // Track detailed quote event
+      trackEvent({
+        action: 'quote_form_opened',
+        category: 'lead_generation',
+        label: `boom-barriers-${selectedBrand.name}`,
+        custom_parameters: {
+          ...baseParams,
+          form_type: 'quote_request',
+          conversion_step: 'form_opened'
+        }
+      });
+      
       setIsFormVisible(true);
+      
     } else if (action === 'whatsapp') {
+      // Track WhatsApp click
+      trackWhatsAppClick('boom-barriers-page', 'boom-barriers');
+      
+      // Track messaging engagement
+      trackEvent({
+        action: 'whatsapp_engagement',
+        category: 'contact',
+        label: 'boom-barriers-whatsapp',
+        custom_parameters: {
+          ...baseParams,
+          contact_method: 'whatsapp',
+          engagement_type: 'instant_messaging'
+        }
+      });
+      
       const message = `Hi! I'm interested in ${selectedBrand.name} Boom Barriers. Price range: ${selectedBrand.priceRange}. Please provide detailed information and quotation.`;
       window.open(`https://wa.me/916302789421?text=${encodeURIComponent(message)}`, '_blank');
+      
     } else if (action === 'call') {
+      // Track phone click
+      trackPhoneClick('boom-barriers-page', 'boom-barriers');
+      
+      // Track call engagement
+      trackEvent({
+        action: 'phone_engagement',
+        category: 'contact',
+        label: 'boom-barriers-call',
+        custom_parameters: {
+          ...baseParams,
+          contact_method: 'phone',
+          engagement_type: 'voice_call'
+        }
+      });
+      
       window.open('tel:+916302789421', '_self');
     }
   };
 
+  // Track service interest events
+  const handleServiceClick = (serviceTitle: string) => {
+    trackEvent({
+      action: 'service_interest',
+      category: 'service_exploration',
+      label: `boom-barriers-${serviceTitle.toLowerCase().replace(/\s+/g, '-')}`,
+      custom_parameters: {
+        service_type: 'boom-barriers',
+        service_category: serviceTitle,
+        selected_brand: selectedBrand.name
+      }
+    });
+  };
+
+  // Track application interest
+  const handleApplicationClick = (applicationTitle: string) => {
+    trackEvent({
+      action: 'application_interest',
+      category: 'use_case_exploration',
+      label: `boom-barriers-${applicationTitle.toLowerCase().replace(/\s+/g, '-')}`,
+      custom_parameters: {
+        service_type: 'boom-barriers',
+        application_type: applicationTitle,
+        selected_brand: selectedBrand.name
+      }
+    });
+  };
+
+  // Track specification views
+  const handleSpecificationView = () => {
+    trackEvent({
+      action: 'specification_view',
+      category: 'product_research',
+      label: `boom-barriers-${selectedBrand.name}`,
+      custom_parameters: {
+        brand_name: selectedBrand.name,
+        service_type: 'boom-barriers',
+        research_depth: 'technical_specifications'
+      }
+    });
+  };
+
+  // Track successful form submission
+  const handleFormSuccess = (formData: any) => {
+    // Track lead submission
+    trackLeadSubmission({
+      service_type: 'boom-barriers',
+      lead_source: 'boom-barriers-page-form',
+      phone_number: formData.phone,
+      form_location: 'boom-barriers-service-page'
+    });
+
+    // Track conversion completion
+    trackEvent({
+      action: 'lead_conversion_complete',
+      category: 'conversion',
+      label: 'boom-barriers-form-success',
+      value: 1,
+      custom_parameters: {
+        service_type: 'boom-barriers',
+        selected_brand: selectedBrand.name,
+        lead_quality: 'hot',
+        conversion_path: 'service-page-form'
+      }
+    });
+
+    setIsFormVisible(false);
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
       {/* Hero Section */}
@@ -321,14 +482,14 @@ export default function BoomBarriersPage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
-                  onClick={() => handleCTAClick('get_quote')}
+                  onClick={() => handleCTAClick('get_quote', 'hero-section')}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   Get Free Quote
                   <ArrowRight className="h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => handleCTAClick('whatsapp')}
+                  onClick={() => handleCTAClick('whatsapp', 'hero-section')}
                   className="bg-green-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="h-5 w-5" />
@@ -485,6 +646,7 @@ export default function BoomBarriersPage() {
                       <span
                         key={index}
                         className="bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-purple-100 px-3 py-1 rounded-full text-sm font-medium"
+                        onClick={() => handleApplicationClick(app)}
                       >
                         {app}
                       </span>
@@ -517,6 +679,8 @@ export default function BoomBarriersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-purple-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-500/30"
+                onClick={() => handleServiceClick(service.title)}
+              
               >
                 <div className="mb-6">{service.icon}</div>
                 <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
@@ -555,6 +719,8 @@ export default function BoomBarriersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-purple-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-500/30"
+                onClick={() => handleApplicationClick(application.title)}
+              
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center mb-4">
                   <application.icon className="h-6 w-6 text-white" />
@@ -620,7 +786,20 @@ export default function BoomBarriersPage() {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-white">Get Boom Barrier Quote</h3>
               <button
-                onClick={() => setIsFormVisible(false)}
+                onClick={() => {
+                  setIsFormVisible(false);
+                  // Track form close event
+                  trackEvent({
+                    action: 'form_closed',
+                    category: 'lead_generation',
+                    label: 'boom-barriers-quote-form',
+                    custom_parameters: {
+                      service_type: 'boom-barriers',
+                      selected_brand: selectedBrand.name,
+                      close_method: 'close_button'
+                    }
+                  });
+                }}
                 className="text-purple-100 hover:text-white text-2xl"
               >
                 ✕
@@ -639,7 +818,8 @@ export default function BoomBarriersPage() {
 
       {/* Floating WhatsApp Button */}
       <button
-        onClick={() => handleCTAClick('whatsapp')}
+        onClick={() => handleCTAClick('whatsapp', 'floating-button')}
+
         className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-40"
       >
         <MessageCircle size={24} />
