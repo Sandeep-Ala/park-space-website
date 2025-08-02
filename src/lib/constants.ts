@@ -4,7 +4,7 @@
 
 export const COMPANY_INFO = {
   name: 'Park Space',
-  tagline: 'Automated Parking Solutions',
+  tagline: 'Automated Parking & Security Solutions',
   phone: '+916302789421', // Updated format for proper tel: links
   phoneDisplay: '+91 63027 89421', // Display format
   email: 'info@parkspace.in',
