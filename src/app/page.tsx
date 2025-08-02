@@ -14,7 +14,7 @@ const services = [
   {
     id: 'boom-barriers',
     name: 'Boom Barriers',
-    image: '/images/services/boom-barriers.jpg',
+    image: '/images/services/boom-barriers.jpeg',
     shortDesc: 'Automated parking solutions with premium brands like FAAC, Benica, and Roger Technology',
     detailedDesc: 'Professional boom barrier installation with authorized dealer support for FAAC, Benica, Roger, Syrotech, and AGS brands. Complete automation solutions for parking management.',
     priceRange: '₹35,000 - ₹1,50,000',
@@ -26,7 +26,7 @@ const services = [
   {
     id: 'cctv-services',
     name: 'CCTV Surveillance',
-    image: '/images/services/cctv-systems.jpg',
+    image: '/images/services/cctv-systems.jpeg',
     shortDesc: 'Complete surveillance systems with HD cameras from Hikvision, Dahua, and CP Plus',
     detailedDesc: 'Professional CCTV installation with premium brands including Hikvision, Dahua, CP Plus, Axis, and Samsung Wisenet. 24/7 monitoring and mobile app integration.',
     priceRange: '₹15,000 - ₹2,00,000',
@@ -37,7 +37,7 @@ const services = [
   {
     id: 'biometric-attendance',
     name: 'Biometric Attendance',
-    image: '/images/services/biometric-systems.jpg',
+    image: '/images/services/biometric-systems.jpeg',
     shortDesc: 'Advanced time tracking and access systems with TIME WATCH and ESSL brands',
     detailedDesc: 'Comprehensive biometric attendance solutions featuring TIME WATCH, ESSL, Realtime, Matrix, and Suprema systems for accurate employee time tracking.',
     priceRange: '₹8,000 - ₹50,000',
@@ -48,7 +48,7 @@ const services = [
   {
     id: 'door-access-controllers',
     name: 'Door Access Control',
-    image: '/images/services/door-access-control.jpg',
+    image: '/images/services/door-access-control.jpeg',
     shortDesc: 'Secure entry and access control systems with ZKTeco and Honeywell',
     detailedDesc: 'Advanced door access control systems featuring ZKTeco, Honeywell, and Hikvision Access brands for secure facility management.',
     priceRange: '₹12,000 - ₹80,000',
@@ -59,7 +59,7 @@ const services = [
   {
     id: 'flap-barriers',
     name: 'Flap Barriers',
-    image: '/images/services/flap-barriers.jpg',
+    image: '/images/services/flap-barriers.jpeg',
     shortDesc: 'Pedestrian access control for offices & metro stations with PARK+ and BFT',
     detailedDesc: 'Professional flap barrier systems from PARK+ and BFT brands for pedestrian access control in high-traffic areas.',
     priceRange: '₹40,000 - ₹2,00,000',
@@ -70,7 +70,7 @@ const services = [
   {
     id: 'bollard-barriers',
     name: 'Bollard Barriers',
-    image: '/images/services/bollard-barriers.jpg',
+    image: '/images/services/bollard-barriers.jpeg',
     shortDesc: 'Heavy-duty vehicle access control systems for high-security areas',
     detailedDesc: 'Robust bollard barrier solutions for vehicle access control in high-security facilities and critical infrastructure.',
     priceRange: '₹80,000 - ₹5,00,000',
@@ -81,7 +81,7 @@ const services = [
   {
     id: 'fire-alarm-systems',
     name: 'Fire & Alarm Systems',
-    image: '/images/services/fire-alarm-systems.jpg',
+    image: '/images/services/fire-alarm-systems.jpeg',
     shortDesc: 'Fire detection and safety systems for comprehensive facility protection',
     detailedDesc: 'Complete fire detection and alarm systems with advanced sensors and monitoring capabilities for facility safety.',
     priceRange: '₹15,000 - ₹2,50,000',
@@ -92,7 +92,7 @@ const services = [
   {
     id: 'networking-systems',
     name: 'Networking Systems',
-    image: '/images/services/networking-systems.jpg',
+    image: '/images/services/networking-systems.jpeg',
     shortDesc: 'Complete IT infrastructure solutions for modern business connectivity',
     detailedDesc: 'Professional networking infrastructure setup including routers, switches, WiFi, and complete IT solutions.',
     priceRange: '₹5,000 - ₹1,50,000',
@@ -103,7 +103,7 @@ const services = [
   {
     id: 'swing-gates',
     name: 'Swing Gates',
-    image: '/images/services/swing-gates.jpg',
+    image: '/images/services/swing-gates.jpeg',
     shortDesc: 'Automated swing gate systems for homes & offices with premium motors',
     detailedDesc: 'Automated swing gate solutions for residential and commercial properties with reliable motor systems.',
     priceRange: '₹22,000 - ₹1,50,000',
