@@ -24,34 +24,6 @@ import { trackEvent } from '@/lib/analytics';
 // Brand data for Flap Barriers
 const flapBarrierBrands = [
   {
-    id: 'park-plus',
-    name: 'PARK+',
-    logo: '/images/brands/park-plus-logo.png',
-    featured: true,
-    priceRange: '₹45,000 - ₹1,20,000',
-    description: 'Premium pedestrian access control systems with advanced security features and sleek design.',
-    features: [
-      'Bi-directional access control',
-      'RFID card reader integration',
-      'Anti-tailgating technology',
-      'Emergency break-away',
-      'LED status indicators',
-      'Weather-resistant design',
-      'Remote monitoring capability',
-      'Customizable access levels'
-    ],
-    specifications: {
-      'Passage Width': '550mm - 900mm',
-      'Throughput': '25-30 persons/minute',
-      'Power Supply': '220V AC, 50Hz',
-      'Operating Temperature': '-20°C to +70°C',
-      'Material': 'Stainless Steel 304',
-      'Integration': 'Access Control Systems',
-      'Warranty': '2 Years Comprehensive'
-    },
-    applications: ['Corporate Offices', 'Metro Stations', 'Airports', 'Shopping Malls']
-  },
-  {
     id: 'bft',
     name: 'BFT',
     logo: '/images/brands/bft-logo.png',
