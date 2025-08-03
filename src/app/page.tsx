@@ -83,10 +83,10 @@ const services = [
     id: 'flap-barriers',
     name: 'Flap Barriers',
     image: '/images/services/flap-barriers.jpeg',
-    shortDesc: 'Pedestrian access control for offices & metro stations with PARK+ and BFT',
-    detailedDesc: 'Professional flap barrier systems from PARK+ and BFT brands for pedestrian access control in high-traffic areas.',
+    shortDesc: 'Pedestrian access control for offices & metro stations with BFT',
+    detailedDesc: 'Professional flap barrier systems from BFT brands for pedestrian access control in high-traffic areas.',
     priceRange: '₹40,000 - ₹2,00,000',
-    brands: ['PARK+', 'BFT', 'Magnetic', 'Turnstile', 'Security Plus'],
+    brands: ['BFT', 'Magnetic', 'Turnstile', 'Security Plus'],
     applications: ['Metro Stations', 'Corporate Lobbies', 'Airports', 'Shopping Malls', 'Government Buildings'],
     route: '/flap-barriers'
   },

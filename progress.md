@@ -23,7 +23,7 @@
 2. **CCTV Services** - Hikvision, Dahua, CP Plus, Axis, Samsung Wisenet (₹15,000 - ₹2,00,000)
 3. **Biometric Attendance** - TIME WATCH, ESSL, Realtime, Matrix, Suprema (₹8,000 - ₹50,000)
 4. **Door Access Controllers** - ZKTeco, Honeywell, Hikvision Access (₹12,000 - ₹80,000)
-5. **Flap Barriers** - PARK+, BFT, Gunnebo, Boon Edam, Automatic Systems (₹40,000 - ₹2,00,000)
+5. **Flap Barriers** -  BFT, Gunnebo, Boon Edam, Automatic Systems (₹40,000 - ₹2,00,000)
 6. **Bollard Barriers** - FAAC, BFT, Nice, Came, Automatic Systems (₹80,000 - ₹5,00,000)
 7. **Fire & Alarm Systems** - Honeywell, Siemens, Johnson Controls, Notifier, Edwards (₹15,000 - ₹2,50,000)
 8. **Networking Systems** - Cisco, D-Link, Netgear, TP-Link, Ubiquiti (₹5,000 - ₹1,50,000)
@@ -75,7 +75,7 @@
 - ✅ **CCTV Services** (/cctv-services) - Hikvision, CP Plus, 5 brands
 - ✅ **Biometric Attendance** (/biometric-attendance) - TIME WATCH focus
 - ✅ **Door Access Controllers** (/door-access-controllers) - ZKTeco premium
-- ✅ **Flap Barriers** (/flap-barriers) - PARK+, BFT, pedestrian access
+- ✅ **Flap Barriers** (/flap-barriers) -  BFT, pedestrian access
 - ✅ **Bollard Barriers** (/bollard-barriers) - Heavy-duty, high security
 - ✅ **Fire & Alarm Systems** (/fire-alarm-systems) - Honeywell, Siemens
 - ✅ **Networking Systems** (/networking-systems) - Cisco, D-Link IT infrastructure
@@ -124,7 +124,7 @@ SERVICE_SEO_DATA = {
   'cctv-services': 'Hikvision CCTV, security cameras, ₹15K-₹2L',
   'biometric-attendance': 'TIME WATCH, fingerprint systems, ₹8K-₹50K',
   'door-access-controllers': 'ZKTeco, RFID access, ₹12K-₹80K',
-  'flap-barriers': 'PARK+ barriers, pedestrian control, ₹40K-₹2L',
+  'flap-barriers': 'barriers, pedestrian control, ₹40K-₹2L',
   'bollard-barriers': 'Heavy-duty, anti-terrorism, ₹80K-₹5L',
   'fire-alarm-systems': 'Honeywell, Siemens, IS 2189, ₹15K-₹2.5L',
   'networking-systems': 'Cisco, D-Link, IT infrastructure, ₹5K-₹1.5L',
