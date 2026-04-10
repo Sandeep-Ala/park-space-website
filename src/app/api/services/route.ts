@@ -5,6 +5,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServices, getServiceBySlug, getBrandsByService } from '@/lib/api'
 
+// Force dynamic: this route depends on runtime env vars (Supabase) and
+// should never be statically analyzed / pre-rendered.
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 // GET: Fetch all services or specific service with brands
 export async function GET(request: NextRequest) {
   try {

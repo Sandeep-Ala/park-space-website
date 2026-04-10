@@ -7,10 +7,17 @@ import LeadForm from '@/components/forms/LeadForm'
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'About Park Space - Leading Parking Automation Company in Hyderabad',
-  description: 'Park Space is Hyderabad\'s trusted provider of automated parking solutions. 10+ years experience in boom barriers, CCTV, biometric systems. Expert installation & maintenance.',
-  keywords: 'Park Space Hyderabad, parking automation company, boom barriers Hyderabad, CCTV installation Hyderabad, automated parking solutions',
-  canonical: '/about'
+  title: 'About Us - Parking Automation & Security Experts',
+  description:
+    "Park Space is Hyderabad's trusted provider of automated parking and security solutions. 5+ years of experience in boom barriers, CCTV, biometric attendance and access control with expert installation and AMC.",
+  keywords: [
+    'about Park Space',
+    'parking automation company Hyderabad',
+    'security automation Hyderabad',
+    'FAAC authorized dealer',
+    'CCTV installation company Hyderabad',
+  ],
+  canonical: '/about',
 })
 
 export default function AboutPage() {
@@ -235,8 +242,8 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <span className="font-semibold">📧 Email:</span>
-                    <a href="mailto:info@parkspace.com" className="hover:text-white">
-                      info@parkspace.com
+                    <a href="mailto:info@parkspace.in" className="hover:text-white">
+                      info@parkspace.in
                     </a>
                   </div>
                   <div className="flex items-center justify-center gap-2">

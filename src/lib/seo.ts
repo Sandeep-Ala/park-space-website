@@ -1,338 +1,339 @@
 // src/lib/seo.ts
-// ✅ ENHANCED: SEO configuration with proper Google verification handling
+// Central SEO configuration: metadata helpers + Schema.org structured data
 
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
-// ========================
-// SITE CONFIGURATION
-// ========================
+// ============================================================================
+// SITE CONFIGURATION (single source of truth)
+// ============================================================================
 
 export const SITE_CONFIG = {
   name: 'Park Space',
-  title: 'Park Space - Automated Parking Solutions in Hyderabad',
-  description: 'Leading provider of boom barriers, CCTV, biometric systems & parking automation in Hyderabad. FAAC authorized dealer. Expert installation & 24/7 support.',
+  legalName: 'Park Space Automation Solutions',
+  titleDefault:
+    'Park Space - Boom Barriers, CCTV & Parking Automation in Hyderabad',
+  titleTemplate: '%s | Park Space Hyderabad',
+  description:
+    'Hyderabad based provider of boom barriers, CCTV surveillance, biometric attendance, access control and parking automation. FAAC authorized dealer with expert installation, AMC and 24x7 support.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://parkspace.in',
+  locale: 'en_IN',
   ogImage: '/images/og-image.jpg',
-  author: 'Park Space Automation Solutions',
-  
+  twitterHandle: '@parkspacetech',
+
   business: {
     name: 'Park Space Automation Solutions',
+    foundingDate: '2019',
+    phone: '+91-63027-89421',
+    phoneTel: '+916302789421',
+    email: 'info@parkspace.in',
     address: {
-      streetAddress: 'Hyderabad',
+      streetAddress:
+        'Plot No: 8-93/2/1, Srinivasa Nagar, Chintal, Qutubullapur',
       addressLocality: 'Hyderabad',
       addressRegion: 'Telangana',
-      postalCode: '500001',
-      addressCountry: 'IN'
+      postalCode: '500054',
+      addressCountry: 'IN',
     },
-    phone: '+91-63027-89421',
-    email: 'info@parkspace.in',
-    
-    // ✅ ENHANCED: Business hours for better local SEO
-    openingHours: [
-      'Mo-Sa 09:00-18:00'
-    ],
-    
-    // ✅ ENHANCED: Geographic coordinates for local SEO
     geo: {
-      latitude: '17.4485',
-      longitude: '78.4048'
-    }
+      latitude: '17.4948',
+      longitude: '78.4296',
+    },
+    openingHours: ['Mo-Sa 09:00-19:00'],
+    priceRange: '₹₹',
+    areaServed: ['Hyderabad', 'Secunderabad', 'Cyberabad', 'Telangana'],
   },
-  
-  // ✅ ENHANCED: Social media profiles
+
   social: {
     facebook: 'https://www.facebook.com/parkspace',
-    twitter: 'https://twitter.com/parkspacetech',
     linkedin: 'https://www.linkedin.com/company/parkspace',
-    youtube: 'https://www.youtube.com/channel/parkspace',
-    instagram: 'https://www.instagram.com/parkspacetech'
-  }
-}
+    instagram: 'https://www.instagram.com/parkspacetech',
+  },
+} as const
 
-// ========================
-// ENHANCED SEO METADATA GENERATION
-// ========================
+// ============================================================================
+// METADATA GENERATOR
+// ============================================================================
 
-interface SEOProps {
+export interface SEOProps {
   title?: string
   description?: string
   keywords?: string | string[]
   canonical?: string
   ogImage?: string
   noIndex?: boolean
-  type?: 'website' | 'article' | 'service'
+  type?: 'website' | 'article'
   publishedTime?: string
   modifiedTime?: string
-  author?: string
-  service?: string
 }
+
+const DEFAULT_KEYWORDS = [
+  'boom barriers Hyderabad',
+  'parking automation Hyderabad',
+  'CCTV installation Hyderabad',
+  'biometric attendance systems',
+  'FAAC dealer Hyderabad',
+  'automated parking systems',
+  'access control systems Hyderabad',
+  'security automation Telangana',
+]
 
 export const generateMetadata = ({
   title,
   description,
-  keywords = [],
+  keywords,
   canonical,
   ogImage,
   noIndex = false,
   type = 'website',
   publishedTime,
   modifiedTime,
-  author,
-  service
 }: SEOProps = {}): Metadata => {
-  
-  // Construct final title
-  const finalTitle = title 
-    ? `${title} | Park Space`
-    : SITE_CONFIG.title
-  
-  // Construct description
-  const finalDescription = description || SITE_CONFIG.description
-  
-  // Handle keywords
-  let finalKeywords: string[] = []
+  const finalDescription = description ?? SITE_CONFIG.description
+
+  // Normalize keywords
+  let finalKeywords: string[] = DEFAULT_KEYWORDS
   if (typeof keywords === 'string') {
-    finalKeywords = keywords.split(',').map(k => k.trim())
-  } else if (Array.isArray(keywords)) {
+    finalKeywords = keywords.split(',').map((k) => k.trim()).filter(Boolean)
+  } else if (Array.isArray(keywords) && keywords.length > 0) {
     finalKeywords = keywords
   }
-  
-  // Add default keywords if none provided
-  if (finalKeywords.length === 0) {
-    finalKeywords = [
-      'boom barriers Hyderabad',
-      'parking automation solutions',
-      'CCTV installation Hyderabad',
-      'biometric systems',
-      'FAAC dealer Hyderabad',
-      'automated parking systems',
-      'access control systems',
-      'parking management Telangana'
-    ]
-  }
-  
-  // Construct canonical URL
-  const canonicalUrl = canonical 
-    ? `${SITE_CONFIG.url}${canonical}`
-    : SITE_CONFIG.url
-  
-  // Construct OG image URL
-  const ogImagePath = ogImage || SITE_CONFIG.ogImage
-  
+
+  // Canonical URL
+  const canonicalPath = canonical?.startsWith('http')
+    ? canonical
+    : `${SITE_CONFIG.url}${canonical ?? '/'}`
+
+  const ogImageUrl = (ogImage ?? SITE_CONFIG.ogImage).startsWith('http')
+    ? (ogImage ?? SITE_CONFIG.ogImage)
+    : `${SITE_CONFIG.url}${ogImage ?? SITE_CONFIG.ogImage}`
+
   return {
-    title: finalTitle,
+    title: title ?? { absolute: SITE_CONFIG.titleDefault },
     description: finalDescription,
-    keywords: finalKeywords.join(', '),
-    authors: [{ name: author || SITE_CONFIG.author }],
-    creator: SITE_CONFIG.author,
+    keywords: finalKeywords,
+    authors: [{ name: SITE_CONFIG.business.name }],
+    creator: SITE_CONFIG.business.name,
     publisher: SITE_CONFIG.business.name,
-    
-    // ✅ ENHANCED: Robots directive for better indexing
-   // ✅ CRITICAL FIX: FORCE index,follow for ALL pages (never noindex)
-    robots: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
-    
-    // Open Graph
+    category: 'Security & Automation',
+
+    robots: noIndex
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+            'max-video-preview': -1,
+          },
+        },
+
+    alternates: {
+      canonical: canonicalPath,
+    },
+
     openGraph: {
-      type: type === 'website' ? 'website' : 'article',
-      url: canonicalUrl,
-      title: finalTitle,
+      type,
+      locale: SITE_CONFIG.locale,
+      url: canonicalPath,
+      title: title ?? SITE_CONFIG.titleDefault,
       description: finalDescription,
       siteName: SITE_CONFIG.name,
       images: [
         {
-          url: ogImagePath,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: finalTitle
-        }
+          alt: title ?? SITE_CONFIG.titleDefault,
+        },
       ],
-      locale: 'en_IN',
       ...(publishedTime && { publishedTime }),
-      ...(modifiedTime && { modifiedTime })
+      ...(modifiedTime && { modifiedTime }),
     },
-    
-    // Twitter
+
     twitter: {
       card: 'summary_large_image',
-      site: '@parkspacetech',
-      creator: '@parkspacetech',
-      title: finalTitle,
+      site: SITE_CONFIG.twitterHandle,
+      creator: SITE_CONFIG.twitterHandle,
+      title: title ?? SITE_CONFIG.titleDefault,
       description: finalDescription,
-      images: [ogImagePath]
+      images: [ogImageUrl],
     },
-    
-    // Additional metadata
-    alternates: {
-      canonical: canonicalUrl
-    },
-    
-    // ✅ FIXED: Verification handling - only include if verification codes exist
-    verification: {
-      ...(process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION && {
-        google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
-      }),
-      ...(process.env.NEXT_PUBLIC_YANDEX_VERIFICATION && {
-        yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION
-      }),
-      ...(process.env.NEXT_PUBLIC_YAHOO_VERIFICATION && {
-        yahoo: process.env.NEXT_PUBLIC_YAHOO_VERIFICATION
-      })
-    },
-    
-    // Category for articles
-    ...(type === 'article' && { category: 'Technology' }),
-    
-    // ✅ ENHANCED: Additional metadata for better SEO
+
     other: {
-      'revisit-after': '7 days',
-      'distribution': 'global',
-      'rating': 'general',
-      'contact': SITE_CONFIG.business.email,
-      'copyright': `© ${new Date().getFullYear()} ${SITE_CONFIG.business.name}`,
-      
-      // Geographic metadata
       'geo.region': 'IN-TG',
       'geo.placename': 'Hyderabad',
       'geo.position': `${SITE_CONFIG.business.geo.latitude};${SITE_CONFIG.business.geo.longitude}`,
-      'ICBM': `${SITE_CONFIG.business.geo.latitude}, ${SITE_CONFIG.business.geo.longitude}`,
-      
-      // Mobile optimization
-      'format-detection': 'telephone=yes',
-      'mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-capable': 'yes'
-    }
+      ICBM: `${SITE_CONFIG.business.geo.latitude}, ${SITE_CONFIG.business.geo.longitude}`,
+    },
   }
 }
 
-// ========================
-// SCHEMA.ORG STRUCTURED DATA
-// ========================
+// ============================================================================
+// SCHEMA.ORG STRUCTURED DATA HELPERS
+// ============================================================================
 
-// ✅ ENHANCED: LocalBusiness schema with complete information
-export const generateLocalBusinessSchema = () => {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': `${SITE_CONFIG.url}#organization`,
-    name: SITE_CONFIG.business.name,
-    alternateName: 'Park Space',
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    logo: `${SITE_CONFIG.url}/images/logo.png`,
-    image: `${SITE_CONFIG.url}/images/og-image.jpg`,
-    
-    // Contact information
+export const generateOrganizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_CONFIG.url}#organization`,
+  name: SITE_CONFIG.business.name,
+  alternateName: SITE_CONFIG.name,
+  url: SITE_CONFIG.url,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${SITE_CONFIG.url}/images/logo.png`,
+    width: 300,
+    height: 100,
+  },
+  foundingDate: SITE_CONFIG.business.foundingDate,
+  description: SITE_CONFIG.description,
+  contactPoint: {
+    '@type': 'ContactPoint',
     telephone: SITE_CONFIG.business.phone,
     email: SITE_CONFIG.business.email,
-    
-    // Address
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: SITE_CONFIG.business.address.streetAddress,
-      addressLocality: SITE_CONFIG.business.address.addressLocality,
-      addressRegion: SITE_CONFIG.business.address.addressRegion,
-      postalCode: SITE_CONFIG.business.address.postalCode,
-      addressCountry: SITE_CONFIG.business.address.addressCountry
-    },
-    
-    // Geographic coordinates
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: SITE_CONFIG.business.geo.latitude,
-      longitude: SITE_CONFIG.business.geo.longitude
-    },
-    
-    // Business hours
-    openingHoursSpecification: {
+    contactType: 'customer service',
+    areaServed: 'IN',
+    availableLanguage: ['English', 'Hindi', 'Telugu'],
+  },
+  address: {
+    '@type': 'PostalAddress',
+    ...SITE_CONFIG.business.address,
+  },
+  sameAs: Object.values(SITE_CONFIG.social),
+})
+
+export const generateLocalBusinessSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${SITE_CONFIG.url}#localbusiness`,
+  name: SITE_CONFIG.business.name,
+  image: `${SITE_CONFIG.url}/images/og-image.jpg`,
+  logo: `${SITE_CONFIG.url}/images/logo.png`,
+  url: SITE_CONFIG.url,
+  telephone: SITE_CONFIG.business.phone,
+  email: SITE_CONFIG.business.email,
+  priceRange: SITE_CONFIG.business.priceRange,
+  address: {
+    '@type': 'PostalAddress',
+    ...SITE_CONFIG.business.address,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE_CONFIG.business.geo.latitude,
+    longitude: SITE_CONFIG.business.geo.longitude,
+  },
+  openingHoursSpecification: [
+    {
       '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ],
       opens: '09:00',
-      closes: '18:00'
+      closes: '19:00',
     },
-    
-    // Services offered
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Parking Automation Services',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Boom Barriers Installation',
-            description: 'Professional boom barrier installation and maintenance services'
-          }
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'CCTV Surveillance Systems',
-            description: 'Complete CCTV installation and monitoring solutions'
-          }
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Biometric Access Control',
-            description: 'Advanced biometric attendance and access control systems'
-          }
-        }
-      ]
-    },
-    
-    // Social media
-    sameAs: [
-      SITE_CONFIG.social.facebook,
-      SITE_CONFIG.social.twitter,
-      SITE_CONFIG.social.linkedin,
-      SITE_CONFIG.social.youtube,
-      SITE_CONFIG.social.instagram
-    ],
-    
-    // Additional business information
-    foundingDate: '2020',
-    numberOfEmployees: '10-50',
-    paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer', 'UPI'],
-    currenciesAccepted: 'INR',
-    areaServed: {
-      '@type': 'State',
-      name: 'Telangana'
-    }
-  }
+  ],
+  areaServed: SITE_CONFIG.business.areaServed.map((name) => ({
+    '@type': 'City',
+    name,
+  })),
+  sameAs: Object.values(SITE_CONFIG.social),
+})
+
+export const generateWebsiteSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_CONFIG.url}#website`,
+  url: SITE_CONFIG.url,
+  name: SITE_CONFIG.name,
+  description: SITE_CONFIG.description,
+  publisher: { '@id': `${SITE_CONFIG.url}#organization` },
+  inLanguage: 'en-IN',
+})
+
+export interface BreadcrumbItem {
+  name: string
+  url: string
 }
 
-// ✅ ENHANCED: Organization schema
-export const generateOrganizationSchema = () => {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': `${SITE_CONFIG.url}#organization`,
-    name: SITE_CONFIG.business.name,
-    alternateName: 'Park Space',
-    url: SITE_CONFIG.url,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${SITE_CONFIG.url}/images/logo.png`,
-      width: 300,
-      height: 100
-    },
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: SITE_CONFIG.business.phone,
-      contactType: 'customer service',
-      availableLanguage: ['English', 'Hindi', 'Telugu']
-    },
-    address: SITE_CONFIG.business.address,
-    sameAs: Object.values(SITE_CONFIG.social)
-  }
+export const generateBreadcrumbSchema = (items: BreadcrumbItem[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: item.url.startsWith('http')
+      ? item.url
+      : `${SITE_CONFIG.url}${item.url}`,
+  })),
+})
+
+export interface ServiceSchemaProps {
+  name: string
+  description: string
+  slug: string
+  image?: string
+  serviceType?: string
+  brands?: string[]
+  priceRange?: string
 }
 
-// Export all configurations
-export default {
-  SITE_CONFIG,
-  generateMetadata,
-  generateLocalBusinessSchema,
-  generateOrganizationSchema
+export const generateServiceSchema = ({
+  name,
+  description,
+  slug,
+  image,
+  serviceType,
+  brands,
+  priceRange,
+}: ServiceSchemaProps) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_CONFIG.url}${slug}#service`,
+  name,
+  description,
+  serviceType: serviceType ?? name,
+  provider: { '@id': `${SITE_CONFIG.url}#organization` },
+  areaServed: SITE_CONFIG.business.areaServed.map((locality) => ({
+    '@type': 'City',
+    name: locality,
+  })),
+  url: `${SITE_CONFIG.url}${slug}`,
+  ...(image && {
+    image: image.startsWith('http') ? image : `${SITE_CONFIG.url}${image}`,
+  }),
+  ...(priceRange && { offers: { '@type': 'Offer', priceCurrency: 'INR', priceRange } }),
+  ...(brands && brands.length > 0 && {
+    brand: brands.map((brandName) => ({ '@type': 'Brand', name: brandName })),
+  }),
+})
+
+export interface FAQItem {
+  question: string
+  answer: string
 }
+
+export const generateFAQSchema = (faqs: FAQItem[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+})
+
+// Helper to stringify JSON-LD safely for dangerouslySetInnerHTML
+export const jsonLdString = (data: unknown): string =>
+  JSON.stringify(data).replace(/</g, '\\u003c')

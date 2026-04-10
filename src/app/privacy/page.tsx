@@ -6,10 +6,15 @@ import { Shield, Lock, Eye, UserCheck, Database, Phone } from 'lucide-react'
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Privacy Policy - Park Space Hyderabad | Data Protection & Security',
-  description: 'Park Space privacy policy outlines how we collect, use, and protect your personal information when you use our parking automation services in Hyderabad.',
-  keywords: 'Park Space privacy policy, data protection, security systems privacy, Hyderabad parking automation privacy',
-  canonical: '/privacy'
+  title: 'Privacy Policy',
+  description:
+    'Park Space privacy policy describes how we collect, use and protect your personal information when you use our parking automation and security services in Hyderabad.',
+  keywords: [
+    'Park Space privacy policy',
+    'data protection',
+    'parking automation privacy',
+  ],
+  canonical: '/privacy',
 })
 
 export default function PrivacyPage() {
@@ -76,7 +81,7 @@ export default function PrivacyPage() {
       title: "Contact & Updates",
       content: [
         "Data Controller: Park Space Automation Solutions, Hyderabad, Telangana, India.",
-        "Contact Email: privacy@parkspace.com for all privacy-related inquiries.",
+        "Contact Email: info@parkspace.in for all privacy-related inquiries.",
         "Phone Contact: +91 63027 89421 for urgent privacy concerns.",
         "Policy Updates: We will notify you of any significant changes to this privacy policy.",
         "Effective Date: This policy is effective from July 2025 and will be reviewed annually."
@@ -233,8 +238,8 @@ export default function PrivacyPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Email</h4>
-                <a href="mailto:privacy@parkspace.com" className="text-purple-100 hover:text-white">
-                  privacy@parkspace.com
+                <a href="mailto:info@parkspace.in" className="text-purple-100 hover:text-white">
+                  info@parkspace.in
                 </a>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">

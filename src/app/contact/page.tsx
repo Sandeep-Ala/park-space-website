@@ -7,10 +7,17 @@ import LeadForm from '@/components/forms/LeadForm'
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Contact Park Space - Get Quote for Parking Automation in Hyderabad',
-  description: 'Contact Park Space for boom barriers, CCTV, biometric systems in Hyderabad. Call +91-63027-89421 or WhatsApp for instant quote. 24/7 support available.',
-  keywords: 'contact Park Space, boom barriers quote Hyderabad, CCTV installation contact, parking automation Hyderabad phone number',
-  canonical: '/contact'
+  title: 'Contact Us - Free Quote for Boom Barriers, CCTV & Automation',
+  description:
+    'Contact Park Space Hyderabad for boom barriers, CCTV, biometric attendance and access control. Call +91-63027-89421 or WhatsApp for instant quotes. Free site survey.',
+  keywords: [
+    'contact Park Space',
+    'boom barrier quote Hyderabad',
+    'CCTV installation enquiry',
+    'parking automation Hyderabad contact',
+    'security systems dealer contact',
+  ],
+  canonical: '/contact',
 })
 
 export default function ContactPage() {
@@ -37,8 +44,8 @@ export default function ContactPage() {
       icon: Mail,
       title: 'Email Us',
       description: 'Detailed inquiries and documentation',
-      value: 'info@parkspace.com',
-      action: 'mailto:info@parkspace.com?subject=Parking%20Automation%20Inquiry',
+      value: 'info@parkspace.in',
+      action: 'mailto:info@parkspace.in?subject=Parking%20Automation%20Inquiry',
       actionText: 'Send Email',
       color: 'from-blue-500 to-cyan-500'
     },
@@ -200,11 +207,11 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Emergency Support</h3>
                 <p className="text-purple-100 mb-4">24/7 available for urgent repairs</p>
-                <a 
+                <a
                   href="tel:+916302789421"
                   className="inline-block px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                 >
-                  Call Emergency: +91 98765 43211
+                  Call Emergency: +91 63027 89421
                 </a>
               </div>
               <div>
@@ -222,11 +229,11 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Email Support</h3>
                 <p className="text-purple-100 mb-4">Detailed technical inquiries</p>
-                <a 
-                  href="mailto:support@parkspace.com"
+                <a
+                  href="mailto:info@parkspace.in"
                   className="inline-block px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                 >
-                  Email: support@parkspace.com
+                  Email: info@parkspace.in
                 </a>
               </div>
             </div>

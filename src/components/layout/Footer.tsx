@@ -119,10 +119,10 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-pink-400 flex-shrink-0" />
                 <a 
-                  href={`mailto:${COMPANY_INFO?.email || 'info@parkspace.com'}`}
+                  href={`mailto:${COMPANY_INFO?.email || 'info@parkspace.in'}`}
                   className="hover:text-pink-400 transition-colors duration-200"
                 >
-                  {COMPANY_INFO?.email || 'info@parkspace.com'}
+                  {COMPANY_INFO?.email || 'info@parkspace.in'}
                 </a>
               </div>
               <div className="flex items-start space-x-3">

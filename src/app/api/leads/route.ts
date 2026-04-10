@@ -5,6 +5,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 // GET: Fetch leads
 export async function GET(request: NextRequest) {
   try {
