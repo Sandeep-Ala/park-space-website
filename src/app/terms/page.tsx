@@ -6,10 +6,16 @@ import { FileText, Scale, Shield, Wrench, CreditCard, AlertTriangle } from 'luci
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'Terms of Service - Park Space Hyderabad | Service Agreement & Conditions',
-  description: 'Park Space terms of service for parking automation solutions in Hyderabad. Service agreements, warranty terms, and conditions for boom barriers, CCTV, and security systems.',
-  keywords: 'Park Space terms of service, parking automation agreement, boom barriers warranty, CCTV service terms Hyderabad',
-  canonical: '/terms'
+  title: 'Terms of Service',
+  description:
+    'Park Space terms of service for parking automation and security solutions in Hyderabad. Service agreements, warranty and conditions for boom barriers, CCTV and access control.',
+  keywords: [
+    'Park Space terms of service',
+    'boom barrier warranty',
+    'CCTV service terms',
+    'AMC terms Hyderabad',
+  ],
+  canonical: '/terms',
 })
 
 export default function TermsPage() {
@@ -266,8 +272,8 @@ export default function TermsPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">Legal Department</h4>
-                <a href="mailto:legal@parkspace.com" className="text-purple-100 hover:text-white">
-                  legal@parkspace.com
+                <a href="mailto:info@parkspace.in" className="text-purple-100 hover:text-white">
+                  info@parkspace.in
                 </a>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
